@@ -16,7 +16,7 @@ public class PlaygroundJDBC {
 
         service.addScore(new Score("minesweeper","David",456,new Date()));
 
-        var scores = service.getBestScores("sk/tuke/gamestudio");
+        var scores = service.getBestScores("minesweeper");
         System.out.println(scores);
 
 

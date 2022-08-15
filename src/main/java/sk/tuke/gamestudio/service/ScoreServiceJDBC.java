@@ -14,7 +14,8 @@ public class ScoreServiceJDBC implements ScoreService {
     private static final String JDBC_USER = "postgres";
     private static final String JDBC_PASSWORD = "postgres";
 
-    private static final String STATEMENT_ADD_SCORE = "INSERT INTO score VALUES (?, ?, ?, ?)";
+    //private static final String STATEMENT_ADD_SCORE = "INSERT INTO score VALUES (?, ?, ?, ?)"; // povodne
+    private static final String STATEMENT_ADD_SCORE = "INSERT INTO  score (game, played_on, points, username) VALUES (?, ?, ?, ?)";
     private static final String STATEMENT_BEST_SCORES = "SELECT game, username, points, played_on FROM score WHERE game= ? ORDER BY points DESC LIMIT 5";
     private static final String STATEMENT_RESET = "DELETE FROM score";
 

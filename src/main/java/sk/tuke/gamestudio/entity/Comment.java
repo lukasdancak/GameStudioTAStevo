@@ -1,30 +1,34 @@
 package sk.tuke.gamestudio.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Score implements Serializable {
+public class Comment implements Serializable {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue// (strategy = GenerationType.IDENTITY)
     private long ident;
+
     private String game;
     private String username;
-    private int points;
-    private Date playedOn;
 
-    public Score() { }
+    @Column(length=1000)
+    private String comment;
 
-    public Score(String game, String username, int points, Date playedOn) {
+    private Date commentedOn;
+
+    public Comment() { }
+
+    public Comment(String game, String username, String comment, Date commentOn) {
         this.game = game;
         this.username = username;
-        this.points = points;
-        this.playedOn = playedOn;
+        this.comment = comment;
+        this.commentedOn = commentOn;
     }
 
     @Override
@@ -32,8 +36,8 @@ public class Score implements Serializable {
         return "Score{" +
                 "game='" + game + '\'' +
                 ", username='" + username + '\'' +
-                ", points=" + points +
-                ", playedOn=" + playedOn +
+                ", comment=" + comment +
+                ", commentOn=" + commentedOn +
                 '}';
     }
 
@@ -54,19 +58,19 @@ public class Score implements Serializable {
         this.username = username;
     }
 
-    public int getPoints() {
-        return points;
+    public String getComment() {
+        return comment;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public Date getPlayedOn() {
-        return playedOn;
+    public Date getCommentedOn() {
+        return commentedOn;
     }
 
-    public void setPlayedOn(Date playedOn) {
-        this.playedOn = playedOn;
+    public void setCommentedOn(Date commentedOn) {
+        this.commentedOn = commentedOn;
     }
 }

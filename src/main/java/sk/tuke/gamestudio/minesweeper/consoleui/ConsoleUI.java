@@ -9,10 +9,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.minesweeper.core.Field;
 import sk.tuke.gamestudio.minesweeper.core.GameState;
 import sk.tuke.gamestudio.minesweeper.core.Tile;
+import sk.tuke.gamestudio.service.CommentService;
 import sk.tuke.gamestudio.service.ScoreService;
 
 /**
@@ -36,6 +39,8 @@ public class ConsoleUI implements UserInterface {
 
     @Autowired
     private ScoreService scoreService;
+    @Autowired
+    private CommentService commentService;
 
     private Settings setting;
 
@@ -52,6 +57,7 @@ public class ConsoleUI implements UserInterface {
         }
     }
 
+
     /**
      * Starts the game.
      *
@@ -65,6 +71,11 @@ public class ConsoleUI implements UserInterface {
         this.field = field;
         System.out.println("Zadaj svoje meno:");
         String userName = readLine();
+
+        System.out.println("Vytvaram objekt rrr");
+        Rating rrr = new Rating("mine", "Lukas", 10, new Date());
+        System.out.println("rrr vytvorilo");
+
         System.out.println("Vyber obtiaznost:");
         System.out.println("(1) BEGINNER, (2) INTERMEDIATE, (3) EXPERT, (ENTER) NECHAT DEFAULT");
         String level = readLine();
@@ -110,8 +121,51 @@ public class ConsoleUI implements UserInterface {
         }
 
         printBestScores();
+
+        //vypyta si komentar a zapise ho do databazy
+       //askForComment(userName);
+
+        // vypise vsetky komentare, ak nejake existuju
+       // printAllComments();
+
         System.exit(0);
 
+    }
+
+    private void printAllComments() {
+        System.out.println("Vypisujem vsetky komentare: ");
+        List<Comment> comments=null;
+        try {
+            comments = commentService.getComments("minesweeper");
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("Nepodarilo sa nacitat komentare pomocou getComments()");
+        }
+        if (comments!=null && !comments.isEmpty()) {
+            for (Comment c : comments) {
+                System.out.println(c);
+            }
+        } else {
+            System.out.println("Ziadne komentare nie su ulozene v databaze");
+        }
+    }
+
+    private void askForComment(String userName) {
+        System.out.println("Pridaj svoj komentar (nacitanych bude prvych 1000 znakov komentaru): ");
+        String userComment = readLine();
+        if (userComment.length() > 0) {
+            userComment = userComment.substring(0, Math.min(userComment.length(), 1000));
+
+            try {
+                commentService.addComment(new Comment("minesweeper", userName, // prerorbit-pole username daat do field
+                        userComment, new Date()));
+            } catch (Exception e) {
+                //e.printStackTrace();
+                System.out.println("Problem s databazou. addComment() neprebehol.");
+            }
+        } else {
+            System.out.println("Komentar nemoze byt prazdny. Komentar nebol pridany.");
+        }
     }
 
     private void printBestScores() {
