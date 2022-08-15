@@ -1,9 +1,6 @@
 package sk.tuke.gamestudio.minesweeper;
 
-import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.entity.Score;
-import sk.tuke.gamestudio.entity.Student;
-import sk.tuke.gamestudio.entity.StudyGroup;
+import sk.tuke.gamestudio.entity.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -12,6 +9,8 @@ import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +32,29 @@ public class PlaygroundJPA {
 
     public void play(){
         System.out.println("Opening JPA playground.");
+
+
+
+        //naplnenie tabuliek occupation a country - funguje - naplnlo tabulky s datami
+    /*
+        //naplnenei tabulky occupations
+        ArrayList<String> listOfOccupations =
+                new ArrayList<>(Arrays.asList(new String[]{"ziak", "student", "zamestnanec", "zivnostnik",
+                        "nezamestnany", "dochodca", "invalid"}));
+        for (String s: listOfOccupations){
+            entityManager.persist(new Occupation(s));
+        }
+
+        //naplnenie tabulky country
+        ArrayList<String> listOfCountries =
+                new ArrayList<>(Arrays.asList(new String[]{"Slovakia", "Hungary", "Poland", "Czechia",
+                        "Ukraine", "Austria"}));
+        for (String s: listOfCountries){
+            entityManager.persist(new Country(s));
+        }
+        */
+
+
 
 
 
