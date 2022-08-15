@@ -46,6 +46,8 @@ public class ConsoleUI implements UserInterface {
     private CountryService countryService;
     @Autowired
     private OccupationService occupationService;
+    @Autowired
+    private RatingService ratingService;
 
     private Settings setting;
 
@@ -186,7 +188,25 @@ public class ConsoleUI implements UserInterface {
         // vypise vsetky komentare, ak nejake existuju
         printAllComments();
 
+        //poziada hraca o jeho hodnotenie hry
+        askForRating(userNamePlusFullName);
+
         System.exit(0);
+
+    }
+
+    private void askForRating(String userNamePlusFullName) {
+        int inputRating=0;
+        System.out.println("Zadaj svoj rating hry");
+        inputRating = readIntFromXToY(1,5);
+
+        try {
+            ratingService.setRating(new Rating("minesweeper", userNamePlusFullName, inputRating, new Date()));
+            System.out.println("Spojenie s databazou prebehlo uspesne, tvoj rating bol ulozeny");
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("Problem s databazou pri zapise ratingu");
+        }
 
     }
 
