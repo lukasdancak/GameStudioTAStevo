@@ -13,6 +13,8 @@ public interface OccupationService {
     // - pridá nový typ typom povolania do databázy.
     public void addOccupation(Occupation  occupation);
 
+    void reset();
+
 
 
 

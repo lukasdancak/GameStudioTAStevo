@@ -14,4 +14,7 @@ public interface PlayerService {
     public void addPlayer(Player player);
 
 
+    void reset();
+
+
 }

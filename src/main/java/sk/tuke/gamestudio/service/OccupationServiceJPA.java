@@ -28,4 +28,9 @@ public class OccupationServiceJPA implements OccupationService{
         entityManager.persist(occupation);
 
     }
+
+    @Override
+    public void reset() {
+        entityManager.createNativeQuery("DELETE FROM occupation").executeUpdate();
+    }
 }

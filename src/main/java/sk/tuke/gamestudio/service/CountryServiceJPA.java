@@ -28,4 +28,9 @@ public class CountryServiceJPA implements CountryService{
         entityManager.persist(country);
 
     }
+
+    @Override
+    public void reset() {
+        entityManager.createNativeQuery("DELETE FROM country").executeUpdate();
+    }
 }

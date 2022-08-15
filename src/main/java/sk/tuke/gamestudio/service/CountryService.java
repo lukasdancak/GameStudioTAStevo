@@ -14,5 +14,8 @@ public interface CountryService {
     public void addCountry(Country country);
 
 
+    void reset();
+
+
 
 }

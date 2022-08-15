@@ -29,4 +29,9 @@ public class PlayerServiceJPA implements PlayerService{
         entityManager.persist(player);
 
     }
+
+    @Override
+    public void reset() {
+        entityManager.createNativeQuery("DELETE FROM player").executeUpdate();
+    }
 }
