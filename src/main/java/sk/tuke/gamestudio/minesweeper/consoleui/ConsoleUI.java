@@ -129,12 +129,6 @@ public class ConsoleUI implements UserInterface {
         }
 
 
-
-
-        System.out.println("Vytvaram objekt rrr");
-        Rating rrr = new Rating("mine", "Lukas", 10, new Date());
-        System.out.println("rrr vytvorilo");
-
         System.out.println("Vyber obtiaznost:");
         System.out.println("(1) BEGINNER, (2) INTERMEDIATE, (3) EXPERT, (ENTER) NECHAT DEFAULT");
         String level = readLine();
@@ -211,73 +205,60 @@ public class ConsoleUI implements UserInterface {
     private Player pridanieNovehoHracaDoDatabazy(String userName) {
         System.out.printf("Tvoje username mam, je to: %s%n", userName);
         System.out.println("Vloz dalsie data");
+
         System.out.println("Zadaj svoje fullname, 1-128 znakov:");
         String fullnameInput= readStringWithLengthFrom1To(128);
+
         System.out.println("Zadaj selfEvaluation, cele cislo od 1 do 10, vratane 1 a 10:");
         int selfEvaluationInput = readIntFromXToY(1,10);
-        System.out.println("Vyber svoju krajinu alebo pridaj novu.");
-        Country countryInput=null;
-        System.out.println("Tlacim zoznam krajin");
+
+        System.out.println("Vyber svoju krajinu zo zoznamu alebo pridaj novu.");
+        Country countryInput=new Country("Zemegula"); //default
+        System.out.println("Nacitavam zoznam krajin z databazy");
         List<Country> listOfcountries = null;
         try {
             listOfcountries = countryService.getCountries();
+            System.out.println("Spojenie s databazou prebehlo v poriadku");
         } catch (Exception e) {
            // e.printStackTrace();
             System.out.println("Problem s databazou, metoda countryService.getCountries() v pridanieNovehoHracaDoDatabazy()");
-            countryInput = new Country("Slovakia"); // default
-        }
+                    }
         if(listOfcountries!=null){
-            System.out.println(listOfcountries);
-            System.out.println("Vyber krajinu podla ID, alebo stlac N pre zadanie novej krajiny");
-            String s = readLine(); // nacita vyber krajiny podla indexu
-            if(s.equalsIgnoreCase("n")){
-                System.out.println("Zadaj meno novej krajiny");
-                String newCountry = readLine();
-                countryInput = new Country(newCountry);
-            }else {
-                int indexVybratejKrajiny = 1; // default - ak bude problem so vstupom ostane hodnota 1, kvoli rychlosti
-                try {
-                    indexVybratejKrajiny = Integer.parseInt(s);
-                    indexVybratejKrajiny = Math.min(indexVybratejKrajiny, listOfcountries.size());
-                } catch (Exception e) {
-                    System.out.println("zly vstup, vyberam prvu krajinu");
-                }
-                countryInput = new Country(listOfcountries.get(indexVybratejKrajiny - 1).getCountry());
+            System.out.println("Vypisujem zoznam krajin:");
+            printListToRowsWithIndexInTheBegining(listOfcountries);
+            System.out.println("Chces zadat svoju vlastnu krajinu ?: A-ano | ENTER - nie, prejdi na vyber krajiny");
+            if(readLine().equalsIgnoreCase("A")){
+                System.out.println("Napis meno svojej krajiny");
+                countryInput=new Country(readLine());
+            } else {
+                System.out.println("Vyber krajinu zadanim indexu zo zoznamu vypisanych krajin");
+                countryInput =listOfcountries.get(readIntFromXToY(0,listOfcountries.size()-1));
             }
-        }
 
-        System.out.println("Vypisujem zoznam pozicii, vyber si svoju podla ID"); // ID idu od jednotky
-        Occupation occupationInput = null;
+        }
+        System.out.println("Vyber svoju poziciu zo zoznamu");
+        Occupation occupationInput = new Occupation("nezamestnany"); //default
+
+        System.out.println("Nacitavam z databazy zoznam pozicii");
         List<Occupation> listOfOccupations = null;
-        try{listOfOccupations = occupationService.getOccupations();}catch(Exception e){
+        try{
+            listOfOccupations = occupationService.getOccupations();
+            System.out.println("Spojenie s databazou prebehlo v poriadku");
+        }catch(Exception e){
             System.out.println("Problem s databazou, metoda getOccupations()");
-            occupationInput = new Occupation("nezamestnany");
+
         }
         if(listOfOccupations!=null){
-            System.out.println(listOfOccupations);
-            String indexPozicieString = readLine();
-            int indexVybratejPozicie=1; // defaultne prva pozicia
-            try{indexVybratejPozicie=Integer.parseInt(indexPozicieString);
-                indexVybratejPozicie = Math.min(indexVybratejPozicie,listOfOccupations.size());
-            } catch (Exception e){
-                System.out.println("Zly vstup pri vybere indexu. vyberam defaultne prvy");
-            }
-            occupationInput = new Occupation(listOfOccupations.get(indexVybratejPozicie - 1).getOccupation());
-
+            System.out.println("Vypisujem zoznam pozicii");
+            printListToRowsWithIndexInTheBegining(listOfOccupations);
+            System.out.println("Vyber poziciu zadanim indexu zo zoznamu vypisanyc pozicii");
+            occupationInput = listOfOccupations.get(readIntFromXToY(0, listOfOccupations.size())-1);
 
         }
-
+        System.out.println("Mam vsetky data, vytvaram objekt Player.");
         return new Player(userName,fullnameInput,selfEvaluationInput,countryInput,occupationInput);
 
-
-
-
-
     }
-
-
-
-
 
     // read String with length from 1 to n
     private String readStringWithLengthFrom1To(int n) {
