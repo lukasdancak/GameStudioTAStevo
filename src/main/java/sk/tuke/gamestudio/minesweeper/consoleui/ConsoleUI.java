@@ -192,7 +192,7 @@ public class ConsoleUI implements UserInterface {
     }
 
     private Player pridanieNovehoHracaDoDatabazy(String userName) {
-        System.out.printf("Tvoje username mam, je to: %n", userName);
+        System.out.printf("Tvoje username mam, je to: %s%n", userName);
         System.out.println("Zadaj svoje fullname, 1-128 znakov:");
         String fullnameInput= readFullNameLengthOfString128();
         System.out.println("Zadaj selfEvaluation, cele cislo od 1 do 10, vratane 1 a 10:");

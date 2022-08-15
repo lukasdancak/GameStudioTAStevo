@@ -2,7 +2,6 @@ package sk.tuke.gamestudio.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(uniqueConstraints =
@@ -19,8 +18,8 @@ public class Player implements Serializable {
     @Column(nullable = false, length=128)
     private String fullName;
 
-    @Column(columnDefinition = "INT CHECK(selfEvaluation BETWEEN 1 AND 10) NOT NULL")
-    private int selfEvaluation;
+    @Column(columnDefinition = "INT CHECK(selfevaluation BETWEEN 1 AND 10) NOT NULL")
+    private int selfevaluation;
 
     @ManyToOne
     @JoinColumn(name = "Country.ident")
@@ -42,7 +41,7 @@ public class Player implements Serializable {
     public Player(String userName, String fullName, int selfEvaluation, Country country, Occupation occupation) {
         this.userName = userName;
         this.fullName = fullName;
-        this.selfEvaluation = selfEvaluation;
+        this.selfevaluation = selfEvaluation;
         this.country = country;
         this.occupation = occupation;
     }
@@ -53,7 +52,7 @@ public class Player implements Serializable {
                 "ident=" + ident +
                 ", userName='" + userName + '\'' +
                 ", fullName='" + fullName + '\'' +
-                ", selfEvaluation=" + selfEvaluation +
+                ", selfEvaluation=" + selfevaluation +
                 ", country=" + country +
                 ", occupation=" + occupation +
                 '}';
@@ -83,12 +82,12 @@ public class Player implements Serializable {
         this.fullName = fullName;
     }
 
-    public int getSelfEvaluation() {
-        return selfEvaluation;
+    public int getSelfevaluation() {
+        return selfevaluation;
     }
 
-    public void setSelfEvaluation(int selfEvaluation) {
-        this.selfEvaluation = selfEvaluation;
+    public void setSelfevaluation(int selfevaluation) {
+        this.selfevaluation = selfevaluation;
     }
 
     public void setCountry(Country country) {
