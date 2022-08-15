@@ -11,16 +11,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import sk.tuke.gamestudio.entity.Comment;
-import sk.tuke.gamestudio.entity.Player;
-import sk.tuke.gamestudio.entity.Rating;
-import sk.tuke.gamestudio.entity.Score;
+import sk.tuke.gamestudio.entity.*;
 import sk.tuke.gamestudio.minesweeper.core.Field;
 import sk.tuke.gamestudio.minesweeper.core.GameState;
 import sk.tuke.gamestudio.minesweeper.core.Tile;
-import sk.tuke.gamestudio.service.CommentService;
-import sk.tuke.gamestudio.service.PlayerService;
-import sk.tuke.gamestudio.service.ScoreService;
+import sk.tuke.gamestudio.service.*;
 
 /**
  * Console user interface.
@@ -47,6 +42,10 @@ public class ConsoleUI implements UserInterface {
     private CommentService commentService;
     @Autowired
     private PlayerService playerService;
+    @Autowired
+    private CountryService countryService;
+    @Autowired
+    private OccupationService occupationService;
 
     private Settings setting;
 
@@ -117,12 +116,20 @@ public class ConsoleUI implements UserInterface {
         if (listOfPlayersFindedByUserName == null) {
             System.out.printf("Nenasiel som v databaze hracov hraca s username %s%n.", userName);
             System.out.println("Musis sa pridat do databazy.");
-            pridanieNovehoHracaDoDatabazy(userName);
+           Player newPlayer = pridanieNovehoHracaDoDatabazy(userName);
+            System.out.println("Novy Player bol vytvoreny. Ukladam ho do databazy");
+            try {
+                playerService.addPlayer(newPlayer);
+                System.out.println("Ulozenie noveho Player do databazy prebehlo vporiadku");
+            } catch (Exception e) {
+                //e.printStackTrace();
+                System.out.println("Ulozenie do databazy sa nepodarilo");
+            }
 
         }
 
 
-        //3.	Hráč má možnosť vybrať jedno z existujúcich (ak sa nejaké nájdu) alebo pridať nového používateľa (vždy).
+
 
         System.out.println("Vytvaram objekt rrr");
         Rating rrr = new Rating("mine", "Lukas", 10, new Date());
@@ -184,12 +191,67 @@ public class ConsoleUI implements UserInterface {
 
     }
 
-    private void pridanieNovehoHracaDoDatabazy(String userName) {
+    private Player pridanieNovehoHracaDoDatabazy(String userName) {
         System.out.printf("Tvoje username mam, je to: %n", userName);
         System.out.println("Zadaj svoje fullname, 1-128 znakov:");
         String fullnameInput= readFullNameLengthOfString128();
         System.out.println("Zadaj selfEvaluation, cele cislo od 1 do 10, vratane 1 a 10:");
         int selfEvaluationInput = readSelfEvaluationFrom1To10();
+        System.out.println("Vyber svoju krajinu alebo pridaj novu.");
+        Country countryInput=null;
+        System.out.println("Tlacim zoznam krajin");
+        List<Country> listOfcountries = null;
+        try {
+            listOfcountries = countryService.getCountries();
+        } catch (Exception e) {
+           // e.printStackTrace();
+            System.out.println("Problem s databazou, metoda countryService.getCountries() v pridanieNovehoHracaDoDatabazy()");
+            countryInput = new Country("Slovakia"); // default
+        }
+        if(listOfcountries!=null){
+            System.out.println(listOfcountries);
+            System.out.println("Vyber krajinu podla ID, alebo stlac N pre zadanie novej krajiny");
+            String s = readLine(); // nacita vyber krajiny podla indexu
+            if(s.equalsIgnoreCase("n")){
+                System.out.println("Zadaj meno novej krajiny");
+                String newCountry = readLine();
+                countryInput = new Country(newCountry);
+            }else {
+                int indexVybratejKrajiny = 1; // default - ak bude problem so vstupom ostane hodnota 1, kvoli rychlosti
+                try {
+                    indexVybratejKrajiny = Integer.parseInt(s);
+                    indexVybratejKrajiny = Math.min(indexVybratejKrajiny, listOfcountries.size());
+                } catch (Exception e) {
+                    System.out.println("zly vstup, vyberam prvu krajinu");
+                }
+                countryInput = new Country(listOfcountries.get(indexVybratejKrajiny - 1).getCountry());
+            }
+        }
+
+        System.out.println("Vypisujem zoznam pozicii, vyber si svoju podla ID"); // ID idu od jednotky
+        Occupation occupationInput = null;
+        List<Occupation> listOfOccupations = null;
+        try{listOfOccupations = occupationService.getOccupations();}catch(Exception e){
+            System.out.println("Problem s databazou, metoda getOccupations()");
+            occupationInput = new Occupation("nezamestnany");
+        }
+        if(listOfOccupations!=null){
+            System.out.println(listOfOccupations);
+            String indexPozicieString = readLine();
+            int indexVybratejPozicie=1; // defaultne prva pozicia
+            try{indexVybratejPozicie=Integer.parseInt(indexPozicieString);
+                indexVybratejPozicie = Math.min(indexVybratejPozicie,listOfOccupations.size());
+            } catch (Exception e){
+                System.out.println("Zly vstup pri vybere indexu. vyberam defaultne prvy");
+            }
+            occupationInput = new Occupation(listOfOccupations.get(indexVybratejPozicie - 1).getOccupation());
+
+
+        }
+
+        return new Player(userName,fullnameInput,selfEvaluationInput,countryInput,occupationInput);
+
+
 
 
 

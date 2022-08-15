@@ -50,6 +50,10 @@ public class SpringClient {
     }
     @Bean
     public PlayerService playerService() {return new PlayerServiceJPA();}
+    @Bean
+    public CountryService countryService(){return new CountryServiceJPA();}
+    @Bean
+    public OccupationService occupationService(){return new OccupationServiceJPA();}
 
 }
 

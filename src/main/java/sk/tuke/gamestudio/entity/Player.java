@@ -35,13 +35,7 @@ public class Player implements Serializable {
 
 
 
-    public Occupation getOccupation() {
-        return occupation;
-    }
 
-    public Country getCountry() {
-        return country;
-    }
 
     public Player() {}
 
@@ -103,5 +97,13 @@ public class Player implements Serializable {
 
     public void setOccupation(Occupation occupation) {
         this.occupation = occupation;
+    }
+
+    public Occupation getOccupation() {
+        return occupation;
+    }
+
+    public Country getCountry() {
+        return country;
     }
 }
