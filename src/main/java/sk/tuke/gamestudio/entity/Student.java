@@ -16,6 +16,8 @@ public class Student {
     @JoinColumn(name = "StudyGroup.ident", nullable = false)
     private StudyGroup studyGroup;
 
+
+
     public Student(){
 
     }
