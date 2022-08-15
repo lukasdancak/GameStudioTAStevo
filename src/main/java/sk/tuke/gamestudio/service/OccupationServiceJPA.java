@@ -18,7 +18,7 @@ public class OccupationServiceJPA implements OccupationService{
     @Override
     public List<Occupation> getOccupations() {
         return entityManager
-                .createQuery("select o.occupation from Occupation o")
+                .createQuery("select o from Occupation o")
                 .getResultList()
                 ;
     }

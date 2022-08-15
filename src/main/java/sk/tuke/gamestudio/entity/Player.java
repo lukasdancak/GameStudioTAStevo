@@ -13,10 +13,10 @@ public class Player implements Serializable {
 
 
     @Column(nullable = false, length=32)
-    private String userName;
+    private String username;
 
     @Column(nullable = false, length=128)
-    private String fullName;
+    private String fullname;
 
     @Column(columnDefinition = "INT CHECK(selfevaluation BETWEEN 1 AND 10) NOT NULL")
     private int selfevaluation;
@@ -39,8 +39,8 @@ public class Player implements Serializable {
     public Player() {}
 
     public Player(String userName, String fullName, int selfEvaluation, Country country, Occupation occupation) {
-        this.userName = userName;
-        this.fullName = fullName;
+        this.username = userName;
+        this.fullname = fullName;
         this.selfevaluation = selfEvaluation;
         this.country = country;
         this.occupation = occupation;
@@ -50,8 +50,8 @@ public class Player implements Serializable {
     public String toString() {
         return "Player{" +
                 "ident=" + ident +
-                ", userName='" + userName + '\'' +
-                ", fullName='" + fullName + '\'' +
+                ", userName='" + username + '\'' +
+                ", fullName='" + fullname + '\'' +
                 ", selfEvaluation=" + selfevaluation +
                 ", country=" + country +
                 ", occupation=" + occupation +
@@ -66,20 +66,20 @@ public class Player implements Serializable {
         this.ident = ident;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFullname() {
+        return fullname;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
     }
 
     public int getSelfevaluation() {

@@ -18,7 +18,7 @@ public class CountryServiceJPA implements CountryService{
     @Override
     public List<Country> getCountries() {
         return entityManager
-                .createQuery("select c.country from Country c")
+                .createQuery("select c from Country c")
                 .getResultList()
                 ;
     }
