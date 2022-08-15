@@ -77,7 +77,7 @@ public class ConsoleUI implements UserInterface {
 
         //Test uloha 8/1. nacita userName - dlzka do 32 vratane
         System.out.println("Zadaj svoje meno:");
-        String userName = readUserNameLengthOfString32();
+        String userName = readStringWithLengthFrom1To(32);
 
         //Test uloha 8/2.	V databáze sa vyhľadajú záznamy pre zadané používateľské meno a vypíšu sa.
         System.out.printf("Vypisujem z databazi zoznam hracov s username %s%n", userName);
@@ -194,7 +194,7 @@ public class ConsoleUI implements UserInterface {
     private Player pridanieNovehoHracaDoDatabazy(String userName) {
         System.out.printf("Tvoje username mam, je to: %s%n", userName);
         System.out.println("Zadaj svoje fullname, 1-128 znakov:");
-        String fullnameInput= readFullNameLengthOfString128();
+        String fullnameInput= readStringWithLengthFrom1To(128);
         System.out.println("Zadaj selfEvaluation, cele cislo od 1 do 10, vratane 1 a 10:");
         int selfEvaluationInput = readSelfEvaluationFrom1To10();
         System.out.println("Vyber svoju krajinu alebo pridaj novu.");
@@ -265,27 +265,19 @@ public class ConsoleUI implements UserInterface {
         else{return readSelfEvaluationFrom1To10();}
     }
 
-    // nacitava string s 1-128 znakmi pre vstup do fullname
-    private String readFullNameLengthOfString128() {
+
+
+    // read String with length from 1 to n
+    private String readStringWithLengthFrom1To(int n) {
         String s = readLine();
-        if (s.length() > 128 || s.length() == 0) {
-            System.out.println("Zly vstup, fullname musi mat 1 az 128 znakov. Opakuj vstup");
-            return readFullNameLengthOfString128();
+        if (s.length() > n || s.length() == 0) {
+            System.out.printf("Zly vstup, vstup musi mat 1 az %s znakov. Opakuj vstup.%n",n);
+            return readStringWithLengthFrom1To(n);
         } else {
             return s;
         }
     }
 
-    // nacitava string s 1-32 znakmi pre vstup do username
-    private String readUserNameLengthOfString32() {
-        String s = readLine();
-        if (s.length() > 32 || s.length() == 0) {
-            System.out.println("Zly vstup, username musi mat 1 az 32 znakov. Opakuj vstup");
-            return readUserNameLengthOfString32();
-        } else {
-            return s;
-        }
-    }
 
     private void printAllComments() {
         System.out.println("Vypisujem vsetky komentare: ");
