@@ -32,17 +32,7 @@ public class Player implements Serializable {
 
 
 
-    @Column(nullable = false, length=64)
-    private String game;
 
-    @Column(nullable = false, length=64)
-    private String username;
-
-    @Column(columnDefinition = "INT CHECK(rating BETWEEN 1 AND 5) NOT NULL")
-    private int rating;
-
-    @Column(nullable = false)
-    private Date ratedOn;
 
     public Occupation getOccupation() {
         return occupation;
@@ -53,55 +43,64 @@ public class Player implements Serializable {
     }
 
     public Player() {}
-    public Player(String game, String username, int rating, Date ratedOn) {
-        this.game = game;
-        this.username = username;
-        this.rating = rating;
-        this.ratedOn = ratedOn;
+
+    public Player(String userName, String fullName, int selfEvaluation, Country country, Occupation occupation) {
+        this.userName = userName;
+        this.fullName = fullName;
+        this.selfEvaluation = selfEvaluation;
+        this.country = country;
+        this.occupation = occupation;
     }
-
-
 
     @Override
     public String toString() {
-        return "Score{" +
-                "game='" + game + '\'' +
-                ", username='" + username + '\'' +
-                ", rating=" + rating +
-                ", ratedOn=" + ratedOn +
+        return "Player{" +
+                "ident=" + ident +
+                ", userName='" + userName + '\'' +
+                ", fullName='" + fullName + '\'' +
+                ", selfEvaluation=" + selfEvaluation +
+                ", country=" + country +
+                ", occupation=" + occupation +
                 '}';
     }
 
-
-    public String getGame() {
-        return game;
+    public long getIdent() {
+        return ident;
     }
 
-    public void setGame(String game) {
-        this.game = game;
+    public void setIdent(long ident) {
+        this.ident = ident;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public int getRating() {
-        return rating;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
-    public Date getRatedOn() {
-        return ratedOn;
+    public int getSelfEvaluation() {
+        return selfEvaluation;
     }
 
-    public void setRatedOn(Date ratedOn) {
-        this.ratedOn = ratedOn;
+    public void setSelfEvaluation(int selfEvaluation) {
+        this.selfEvaluation = selfEvaluation;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public void setOccupation(Occupation occupation) {
+        this.occupation = occupation;
     }
 }

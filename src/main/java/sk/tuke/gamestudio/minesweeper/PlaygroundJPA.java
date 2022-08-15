@@ -34,7 +34,11 @@ public class PlaygroundJPA {
     public void play(){
         System.out.println("Opening JPA playground.");
 
-        String firstName= zadajFirstName();
+
+
+
+        // veci z hodiny:
+      /*  String firstName= zadajFirstName();
         String lastName = zadajLastName();
         int group = zadajGroup();
 
@@ -52,7 +56,7 @@ public class PlaygroundJPA {
         List<Student> students= entityManager.createQuery("select s from Student s")
                 .getResultList();
 
-        System.out.println(students);
+        System.out.println(students); */
 
 
 
