@@ -72,16 +72,21 @@ public class ConsoleUI implements UserInterface {
     public void newGameStarted(Field field) {
 
         int gameScore = 0;
-
         this.field = field;
+        String userName="";
+        // moja vlastna premmenna, zapisem do nej objekt Player, ktori patri prave hrajucemu hraocvi
+        Player playingPlayer=null;
+
 
         //Test uloha 8/1. nacita userName - dlzka do 32 vratane
         System.out.println("Zadaj svoje meno:");
-        String userName = readStringWithLengthFrom1To(32);
+       userName = readStringWithLengthFrom1To(32);
 
         //Test uloha 8/2.	V databáze sa vyhľadajú záznamy pre zadané používateľské meno a vypíšu sa.
-        System.out.printf("Vypisujem z databazi zoznam hracov s username %s%n", userName);
+        System.out.println("Hladam v databaze Player objekt s tvojim username");
+        System.out.printf("Porovnavam tvoj  username: %s s databazou.%n", userName);
         List<Player> listOfPlayersFindedByUserName = null;
+
         try {
             listOfPlayersFindedByUserName = playerService.getPlayersByUserName(userName);
         } catch (Exception e) {
@@ -89,41 +94,36 @@ public class ConsoleUI implements UserInterface {
             System.out.println("Problem s databazou. Premenna: listOfPlayersFindedByUserName;" +
                     " Metoda: playerService.getPlayersByUserName()");
         }
+
         // situacia ak najde prave jedneho hraca s danym username v databaze
         if (listOfPlayersFindedByUserName != null && listOfPlayersFindedByUserName.size() == 1) {
-            System.out.printf("ahoj %s, nasiel som ta v databaze, vitaj spat!",
-                    listOfPlayersFindedByUserName.get(0).getUserName());
+            System.out.println("Nasiel som prave jeden objekt s tvojim username");
+            playingPlayer = listOfPlayersFindedByUserName.get(0);
         }
 
         // situacia ak najde viac ako  jedneho hraca s danym username v databaze
-       String indexVyberHraca=""; // pommocna premenna zatial ju nevyuzivam
         if (listOfPlayersFindedByUserName != null && listOfPlayersFindedByUserName.size() > 1) {
             System.out.printf("Nasiel som v databaze viacerych hracov s danym s username: %S%n.",userName);
-            System.out.println("Ktory si ty? Zadaj index");
-            for (int i = 0; i < listOfPlayersFindedByUserName.size(); i++) {
-                System.out.printf("Hrac c. %s: %s%n", i,listOfPlayersFindedByUserName.get(i).toString());
-
-            }
-            // tento kod je len akoze, nic sa tu nedeje
-            indexVyberHraca=readLine(); //zatial nepouzivam vratenu hodnotu, dorobit vyber hraca - podla vyberu
-             userName=userName;        // podla vyberu nacitam aj fullname,lebo:  username+fullanme => unique
-
-
+            printListToRowsWithIndexInTheBegining(listOfPlayersFindedByUserName);
+            System.out.println("Ktory si ty? Zadaj index:");
+            int selectedInt = readIntFromXToY(0,listOfPlayersFindedByUserName.size()-1);
+            playingPlayer = listOfPlayersFindedByUserName.get(selectedInt);
         }
 
 
         // situacia ak nenajde ziadneho hraca s danym username v databaze
         if (listOfPlayersFindedByUserName == null) {
-            System.out.printf("Nenasiel som v databaze hracov hraca s username %s%n.", userName);
-            System.out.println("Musis sa pridat do databazy.");
+            System.out.printf("Nenasiel som v databaze Player hraca s username %s%n.", userName);
+            System.out.println("Musim vytvorit objekt Player s tvojimi datami");
            Player newPlayer = pridanieNovehoHracaDoDatabazy(userName);
+           playingPlayer=newPlayer; //zbytocne 2 premenne , ale lespie sa to cita
             System.out.println("Novy Player bol vytvoreny. Ukladam ho do databazy");
             try {
                 playerService.addPlayer(newPlayer);
                 System.out.println("Ulozenie noveho Player do databazy prebehlo vporiadku");
             } catch (Exception e) {
                 //e.printStackTrace();
-                System.out.println("Ulozenie do databazy sa nepodarilo");
+                System.out.println("Ulozenie newPlayer do databazy sa nepodarilo");
             }
 
         }
@@ -191,12 +191,30 @@ public class ConsoleUI implements UserInterface {
 
     }
 
+    private int readIntFromXToY(int i, int k) {
+        String s =readLine();
+        if(s.matches("\\d+")){
+            int j = Integer.parseInt(s);
+            if(j>=i && j<=k){return j;}
+        }
+        System.out.printf("Zly vstup, zadaj integer od %s do %s%n", i,k);
+        return readIntFromXToY(i,k);
+    }
+
+    private void printListToRowsWithIndexInTheBegining(List listOfPlayersFindedByUserName) {
+        for (int i = 0; i < listOfPlayersFindedByUserName.size(); i++) {
+            System.out.printf("%s.: %s%n", i, listOfPlayersFindedByUserName.get(i).toString());
+
+        }
+    }
+
     private Player pridanieNovehoHracaDoDatabazy(String userName) {
         System.out.printf("Tvoje username mam, je to: %s%n", userName);
+        System.out.println("Vloz dalsie data");
         System.out.println("Zadaj svoje fullname, 1-128 znakov:");
         String fullnameInput= readStringWithLengthFrom1To(128);
         System.out.println("Zadaj selfEvaluation, cele cislo od 1 do 10, vratane 1 a 10:");
-        int selfEvaluationInput = readSelfEvaluationFrom1To10();
+        int selfEvaluationInput = readIntFromXToY(1,10);
         System.out.println("Vyber svoju krajinu alebo pridaj novu.");
         Country countryInput=null;
         System.out.println("Tlacim zoznam krajin");
@@ -257,13 +275,7 @@ public class ConsoleUI implements UserInterface {
 
     }
 
-    private int readSelfEvaluationFrom1To10() {
-        String s =readLine();
-        List<String> allowedValues =
-                new ArrayList<String>(Arrays.asList(new String[]{"1","2","3","4","5","6","7","8","9","10"}));
-        if(allowedValues.contains(s)){return Integer.parseInt(s);}
-        else{return readSelfEvaluationFrom1To10();}
-    }
+
 
 
 
