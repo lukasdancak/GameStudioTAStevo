@@ -11,7 +11,7 @@ public class Occupation implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long ident;
 
-    @Column(nullable = false, length=32)
+    @Column(nullable = false, length=32, unique=true)
     private String occupation;
 
     public Occupation() {

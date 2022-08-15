@@ -11,7 +11,7 @@ public class Country implements Serializable {
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private long ident;
 
-    @Column(nullable = false, length=128)
+    @Column(nullable = false, length=128, unique=true)
     private String country;
 
 
