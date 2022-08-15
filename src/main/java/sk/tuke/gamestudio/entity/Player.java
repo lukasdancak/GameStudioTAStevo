@@ -9,8 +9,9 @@ import java.util.Date;
         {@UniqueConstraint(name = "UniqueUserNameAndFullName", columnNames = { "userName", "fullName" })})
 public class Player implements Serializable {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private long ident;
+    @GeneratedValue (strategy = GenerationType.IDENTITY) // riesenie ID nechavam na databazu, aby som mohol pripadne
+    private long ident;                                  // pouzit aj JDBC service
+
 
     @Column(nullable = false, length=32)
     private String userName;
@@ -18,7 +19,7 @@ public class Player implements Serializable {
     @Column(nullable = false, length=128)
     private String fullName;
 
-    @Column(columnDefinition = "INT CHECK(rating BETWEEN 1 AND 10) NOT NULL")
+    @Column(columnDefinition = "INT CHECK(selfEvaluation BETWEEN 1 AND 10) NOT NULL")
     private int selfEvaluation;
 
     @ManyToOne

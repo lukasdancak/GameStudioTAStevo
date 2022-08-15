@@ -3,6 +3,8 @@ package sk.tuke.gamestudio.minesweeper.consoleui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,12 +12,14 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Player;
 import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.minesweeper.core.Field;
 import sk.tuke.gamestudio.minesweeper.core.GameState;
 import sk.tuke.gamestudio.minesweeper.core.Tile;
 import sk.tuke.gamestudio.service.CommentService;
+import sk.tuke.gamestudio.service.PlayerService;
 import sk.tuke.gamestudio.service.ScoreService;
 
 /**
@@ -41,6 +45,8 @@ public class ConsoleUI implements UserInterface {
     private ScoreService scoreService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private PlayerService playerService;
 
     private Settings setting;
 
@@ -66,11 +72,57 @@ public class ConsoleUI implements UserInterface {
     @Override
     public void newGameStarted(Field field) {
 
-        int gameScore=0;
+        int gameScore = 0;
 
         this.field = field;
+
+        //Test uloha 8/1. nacita userName - dlzka do 32 vratane
         System.out.println("Zadaj svoje meno:");
-        String userName = readLine();
+        String userName = readUserNameLengthOfString32();
+
+        //Test uloha 8/2.	V databáze sa vyhľadajú záznamy pre zadané používateľské meno a vypíšu sa.
+        System.out.printf("Vypisujem z databazi zoznam hracov s username %s%n", userName);
+        List<Player> listOfPlayersFindedByUserName = null;
+        try {
+            listOfPlayersFindedByUserName = playerService.getPlayersByUserName(userName);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("Problem s databazou. Premenna: listOfPlayersFindedByUserName;" +
+                    " Metoda: playerService.getPlayersByUserName()");
+        }
+        // situacia ak najde prave jedneho hraca s danym username v databaze
+        if (listOfPlayersFindedByUserName != null && listOfPlayersFindedByUserName.size() == 1) {
+            System.out.printf("ahoj %s, nasiel som ta v databaze, vitaj spat!",
+                    listOfPlayersFindedByUserName.get(0).getUserName());
+        }
+
+        // situacia ak najde viac ako  jedneho hraca s danym username v databaze
+       String indexVyberHraca=""; // pommocna premenna zatial ju nevyuzivam
+        if (listOfPlayersFindedByUserName != null && listOfPlayersFindedByUserName.size() > 1) {
+            System.out.printf("Nasiel som v databaze viacerych hracov s danym s username: %S%n.",userName);
+            System.out.println("Ktory si ty? Zadaj index");
+            for (int i = 0; i < listOfPlayersFindedByUserName.size(); i++) {
+                System.out.printf("Hrac c. %s: %s%n", i,listOfPlayersFindedByUserName.get(i).toString());
+
+            }
+            // tento kod je len akoze, nic sa tu nedeje
+            indexVyberHraca=readLine(); //zatial nepouzivam vratenu hodnotu, dorobit vyber hraca - podla vyberu
+             userName=userName;        // podla vyberu nacitam aj fullname,lebo:  username+fullanme => unique
+
+
+        }
+
+
+        // situacia ak nenajde ziadneho hraca s danym username v databaze
+        if (listOfPlayersFindedByUserName == null) {
+            System.out.printf("Nenasiel som v databaze hracov hraca s username %s%n.", userName);
+            System.out.println("Musis sa pridat do databazy.");
+            pridanieNovehoHracaDoDatabazy(userName);
+
+        }
+
+
+        //3.	Hráč má možnosť vybrať jedno z existujúcich (ak sa nejaké nájdu) alebo pridať nového používateľa (vždy).
 
         System.out.println("Vytvaram objekt rrr");
         Rating rrr = new Rating("mine", "Lukas", 10, new Date());
@@ -79,7 +131,7 @@ public class ConsoleUI implements UserInterface {
         System.out.println("Vyber obtiaznost:");
         System.out.println("(1) BEGINNER, (2) INTERMEDIATE, (3) EXPERT, (ENTER) NECHAT DEFAULT");
         String level = readLine();
-        if(level != null && !level.equals("")) {
+        if (level != null && !level.equals("")) {
             try {
                 int intLevel = Integer.parseInt(level);
                 Settings s = switch (intLevel) {
@@ -98,50 +150,91 @@ public class ConsoleUI implements UserInterface {
         boolean gameShouldContinue = true;
 
         do {
-                    update();
-                    processInput();
+            update();
+            processInput();
 
-                    var fieldState=this.field.getState();
+            var fieldState = this.field.getState();
 
-                    if (fieldState == GameState.FAILED) {
-                        System.out.println(userName +", odkryl si minu. Prehral si. Tvoje skore je "+gameScore+".");
-                        gameShouldContinue = false;
-                    }
-                    if (fieldState == GameState.SOLVED) {
-                        gameScore=this.field.getScore();
-                        System.out.println(userName +", vyhral si. Tvoje skore je "+gameScore+".");
-                        gameShouldContinue = false;
+            if (fieldState == GameState.FAILED) {
+                System.out.println(userName + ", odkryl si minu. Prehral si. Tvoje skore je " + gameScore + ".");
+                gameShouldContinue = false;
+            }
+            if (fieldState == GameState.SOLVED) {
+                gameScore = this.field.getScore();
+                System.out.println(userName + ", vyhral si. Tvoje skore je " + gameScore + ".");
+                gameShouldContinue = false;
             }
         } while (gameShouldContinue);
 
-        try{
-            scoreService.addScore(new Score("minesweeper", userName,gameScore,new Date()));
-        }catch(Exception e){
-            System.out.println("Nepodarilo sa zapisat skore do databazy ("+e.getMessage()+")");
+        try {
+            scoreService.addScore(new Score("minesweeper", userName, gameScore, new Date()));
+        } catch (Exception e) {
+            System.out.println("Nepodarilo sa zapisat skore do databazy (" + e.getMessage() + ")");
         }
 
         printBestScores();
 
         //vypyta si komentar a zapise ho do databazy
-       //askForComment(userName);
+        //askForComment(userName);
 
         // vypise vsetky komentare, ak nejake existuju
-       // printAllComments();
+        // printAllComments();
 
         System.exit(0);
 
     }
 
+    private void pridanieNovehoHracaDoDatabazy(String userName) {
+        System.out.printf("Tvoje username mam, je to: %n", userName);
+        System.out.println("Zadaj svoje fullname, 1-128 znakov:");
+        String fullnameInput= readFullNameLengthOfString128();
+        System.out.println("Zadaj selfEvaluation, cele cislo od 1 do 10, vratane 1 a 10:");
+        int selfEvaluationInput = readSelfEvaluationFrom1To10();
+
+
+
+    }
+
+    private int readSelfEvaluationFrom1To10() {
+        String s =readLine();
+        List<String> allowedValues =
+                new ArrayList<String>(Arrays.asList(new String[]{"1","2","3","4","5","6","7","8","9","10"}));
+        if(allowedValues.contains(s)){return Integer.parseInt(s);}
+        else{return readSelfEvaluationFrom1To10();}
+    }
+
+    // nacitava string s 1-128 znakmi pre vstup do fullname
+    private String readFullNameLengthOfString128() {
+        String s = readLine();
+        if (s.length() > 128 || s.length() == 0) {
+            System.out.println("Zly vstup, fullname musi mat 1 az 128 znakov. Opakuj vstup");
+            return readFullNameLengthOfString128();
+        } else {
+            return s;
+        }
+    }
+
+    // nacitava string s 1-32 znakmi pre vstup do username
+    private String readUserNameLengthOfString32() {
+        String s = readLine();
+        if (s.length() > 32 || s.length() == 0) {
+            System.out.println("Zly vstup, username musi mat 1 az 32 znakov. Opakuj vstup");
+            return readUserNameLengthOfString32();
+        } else {
+            return s;
+        }
+    }
+
     private void printAllComments() {
         System.out.println("Vypisujem vsetky komentare: ");
-        List<Comment> comments=null;
+        List<Comment> comments = null;
         try {
             comments = commentService.getComments("minesweeper");
         } catch (Exception e) {
             //e.printStackTrace();
             System.out.println("Nepodarilo sa nacitat komentare pomocou getComments()");
         }
-        if (comments!=null && !comments.isEmpty()) {
+        if (comments != null && !comments.isEmpty()) {
             for (Comment c : comments) {
                 System.out.println(c);
             }
@@ -171,13 +264,13 @@ public class ConsoleUI implements UserInterface {
     private void printBestScores() {
         System.out.println("------------------------------------------------");
         System.out.println("5 najlepsich skore (hrac/ka, skore, datum):");
-        try{
+        try {
             List<Score> bestScores = scoreService.getBestScores("minesweeper");
             for (Score score : bestScores) {
-                System.out.printf("%s, %d, %tD %n",score.getUsername(),score.getPoints(), score.getPlayedOn());
+                System.out.printf("%s, %d, %tD %n", score.getUsername(), score.getPoints(), score.getPlayedOn());
             }
-        }catch(Exception e){
-            System.out.println("Nepodarilo sa ziskat skore z databazy ("+e.getMessage()+")");
+        } catch (Exception e) {
+            System.out.println("Nepodarilo sa ziskat skore z databazy (" + e.getMessage() + ")");
         }
 
 
@@ -205,7 +298,7 @@ public class ConsoleUI implements UserInterface {
         for (int r = 0; r < field.getRowCount(); r++) {
             System.out.printf("%3s", Character.toString(r + 65));
             for (int c = 0; c < field.getColumnCount(); c++) {
-                    System.out.printf("%3s", field.getTile(r, c));
+                System.out.printf("%3s", field.getTile(r, c));
             }
             System.out.println();
         }
@@ -214,7 +307,7 @@ public class ConsoleUI implements UserInterface {
     }
 
     @Override
-    public void play(){
+    public void play() {
         setting = Settings.load();
 
 
@@ -238,7 +331,7 @@ public class ConsoleUI implements UserInterface {
         String playerInput = readLine();
 
 
-        if(playerInput.trim().equals("X")) {
+        if (playerInput.trim().equals("X")) {
             System.out.println("Ukoncujem hru");
             System.exit(0);
         }
@@ -311,7 +404,7 @@ public class ConsoleUI implements UserInterface {
             return;
         }
 
-        if(OPEN_MARK_PATTERN.matcher(playerInput).matches()) {
+        if (OPEN_MARK_PATTERN.matcher(playerInput).matches()) {
             doOperation(matcher1.group(1).charAt(0), matcher1.group(2).charAt(0), Integer.parseInt(matcher1.group(3)));
         }
 
