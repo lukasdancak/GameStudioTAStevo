@@ -52,11 +52,16 @@ public class RatingServiceJPA implements RatingService{
 
     @Override
     public int getRating(String game, String username) {
-        entityManager
-                .createQuery("select s.rating from Rating s " +
-                        "where s.game = :mygame and s.username= :myusername")
-                .setParameter("mygame", game).setParameter("myusername", username).getResultList();
-        return 1;
+        try {
+            return ((Number) entityManager
+                    .createQuery("SELECT rating FROM Rating WHERE game= :myGame and username= :myUser")
+                    .setParameter("myGame", game)
+                    .setParameter("myUser", username)
+                    .getSingleResult())
+                    .intValue();
+        } catch (NoResultException | NullPointerException e) {
+            return 0;
+        }
     }
 
     @Override
