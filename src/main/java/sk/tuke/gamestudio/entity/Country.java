@@ -23,10 +23,7 @@ public class Country implements Serializable {
 
     @Override
     public String toString() {
-        return "Country{" +
-                "ident=" + ident +
-                ", country='" + country + '\'' +
-                '}';
+        return country;
     }
 
     public long getIdent() {

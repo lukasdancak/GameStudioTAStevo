@@ -76,6 +76,7 @@ public class ConsoleUI implements UserInterface {
         String userName="";
         // moja vlastna premmenna, zapisem do nej objekt Player, ktori patri prave hrajucemu hraocvi
         Player playingPlayer=null;
+        String userNamePlusFullName; // input for services Score, Rating, Comment
 
 
         //Test uloha 8/1. nacita userName - dlzka do 32 vratane
@@ -113,7 +114,7 @@ public class ConsoleUI implements UserInterface {
 
         // situacia ak nenajde ziadneho hraca s danym username v databaze
         if (listOfPlayersFindedByUserName == null) {
-            System.out.printf("Nenasiel som v databaze Player hraca s username %s%n.", userName);
+            System.out.printf("Nenasiel som v databaze Player hraca s username %s%n", userName);
             System.out.println("Musim vytvorit objekt Player s tvojimi datami");
            Player newPlayer = pridanieNovehoHracaDoDatabazy(userName);
            playingPlayer=newPlayer; //zbytocne 2 premenne , ale lespie sa to cita
@@ -127,6 +128,10 @@ public class ConsoleUI implements UserInterface {
             }
 
         }
+
+        userNamePlusFullName = playingPlayer.getUsername()+"("+playingPlayer.getFullname()+")";
+
+
 
 
         System.out.println("Vyber obtiaznost:");
@@ -168,7 +173,7 @@ public class ConsoleUI implements UserInterface {
         } while (gameShouldContinue);
 
         try {
-            scoreService.addScore(new Score("minesweeper", userName, gameScore, new Date()));
+            scoreService.addScore(new Score("minesweeper", userNamePlusFullName, gameScore, new Date()));
         } catch (Exception e) {
             System.out.println("Nepodarilo sa zapisat skore do databazy (" + e.getMessage() + ")");
         }
@@ -176,10 +181,10 @@ public class ConsoleUI implements UserInterface {
         printBestScores();
 
         //vypyta si komentar a zapise ho do databazy
-        //askForComment(userName);
+        askForComment(userNamePlusFullName);
 
         // vypise vsetky komentare, ak nejake existuju
-        // printAllComments();
+        printAllComments();
 
         System.exit(0);
 
@@ -197,11 +202,11 @@ public class ConsoleUI implements UserInterface {
 
     private void printListToRowsWithIndexInTheBegining(List listOfPlayersFindedByUserName) {
         for (int i = 0; i < listOfPlayersFindedByUserName.size(); i++) {
-            System.out.printf("%s.: %s%n", i, listOfPlayersFindedByUserName.get(i).toString());
+            System.out.printf("Index: %s |-> %s%n", i, listOfPlayersFindedByUserName.get(i).toString());
 
         }
     }
-
+    //vypyta si data na  vytvorenie noveho objektu Player, username je uz vstup metody
     private Player pridanieNovehoHracaDoDatabazy(String userName) {
         System.out.printf("Tvoje username mam, je to: %s%n", userName);
         System.out.println("Vloz dalsie data");
@@ -236,7 +241,9 @@ public class ConsoleUI implements UserInterface {
             }
 
         }
-        System.out.println("Vyber svoju poziciu zo zoznamu");
+
+
+        System.out.println("Vyber svoju pracovnu poziciu zo zoznamu");
         Occupation occupationInput = new Occupation("nezamestnany"); //default
 
         System.out.println("Nacitavam z databazy zoznam pozicii");

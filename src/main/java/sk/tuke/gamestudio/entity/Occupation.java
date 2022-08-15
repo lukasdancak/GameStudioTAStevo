@@ -21,6 +21,11 @@ public class Occupation implements Serializable {
         this.occupation = occupation;
     }
 
+    @Override
+    public String toString() {
+        return occupation ;
+    }
+
     public long getIdent() {
         return ident;
     }
