@@ -6,16 +6,21 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
+import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.minesweeper.consoleui.ConsoleUI;
 import sk.tuke.gamestudio.minesweeper.PlaygroundJPA;
 import sk.tuke.gamestudio.service.*;
 
 @SpringBootApplication
+@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.REGEX,
+        pattern = "sk.tuke.gamestudio.server.*"))
 public class SpringClient {
     public static void main (String[] args){
 
-       SpringApplication.run(SpringClient.class);
-        // new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);
+//       SpringApplication.run(SpringClient.class);
+         new SpringApplicationBuilder(SpringClient.class).web(WebApplicationType.NONE).run(args);
     }
 
 //    @Bean
@@ -37,17 +42,20 @@ public class SpringClient {
     }
 
     @Bean
-    public ScoreService scoreService(){ return new ScoreServiceJPA();    }
+    public RestTemplate restTemplate(){ return new RestTemplate();}
+
 
     @Bean
+    public ScoreService scoreService(){ return new ScoreServiceREST();    }
+    @Bean
     public CommentService commentService(){
-        return new CommentServiceJPA();
+        return new CommentServiceREST();
     }
-
     @Bean
     public RatingService ratingService(){
         return new RatingServiceJPA();
     }
+
     @Bean
     public PlayerService playerService() {return new PlayerServiceJPA();}
     @Bean

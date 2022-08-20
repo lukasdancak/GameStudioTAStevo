@@ -17,7 +17,7 @@ public class Rating implements Serializable {
     @Column(nullable = false, length=64)
     private String game;
 
-    @Column(nullable = false, length=64)
+    @Column(nullable = false, length=162) // 162 = username 32 + fullname 128, + 2x zatvorka
     private String username;
 
     @Column(columnDefinition = "INT CHECK(rating BETWEEN 1 AND 5) NOT NULL")

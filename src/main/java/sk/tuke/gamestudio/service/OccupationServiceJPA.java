@@ -25,7 +25,12 @@ public class OccupationServiceJPA implements OccupationService{
 
     @Override
     public void addOccupation(Occupation occupation) {
-        entityManager.persist(occupation);
+        try {
+            entityManager.persist(occupation);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.printf("Objekt s menom pozicie %s uz existuje, zapis neprebehol.%n", occupation.getOccupation());
+        }
 
     }
 

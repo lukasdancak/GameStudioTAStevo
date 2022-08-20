@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="sk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Stefan Korecko" />
+    <link rel="stylesheet"
+          href="/css/mines.css"
+          media="screen" />
+    <title>GameStudio - Minesweeper</title>
+</head>
+<body>
+<h2>Minesweeper</h2>
+<div th:utext=${"@minesweeperControllergetFieldAsHtml"}></div>
+
+<!--<div th:text="${1+2}"></divth:text></div>-->
+<!--<div th:text=${"@minesweeperConroller.getCurrTime"}></div>-->
+
+</body>
+</html>

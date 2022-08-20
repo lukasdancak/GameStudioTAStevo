@@ -3,10 +3,7 @@ package sk.tuke.gamestudio.minesweeper.consoleui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -76,8 +73,11 @@ public class ConsoleUI implements UserInterface {
         int gameScore = 0;
         this.field = field;
         String userName="";
+
         // moja vlastna premmenna, zapisem do nej objekt Player, ktori patri prave hrajucemu hraocvi
-        Player playingPlayer=null;
+        Player playingPlayer= new Player("host","anonymous",    // defaultny player prep pripad,
+                1, new Country("Zemegula"), new Occupation("nezamestnany"));      //ze sa nepodari nacitat/vytvorit Playera
+
         String userNamePlusFullName; // input for services Score, Rating, Comment
 
 
@@ -190,6 +190,8 @@ public class ConsoleUI implements UserInterface {
 
         //poziada hraca o jeho hodnotenie hry
         askForRating(userNamePlusFullName);
+
+        System.out.printf("Vypisujem prirmerny rating-ako INT: %s.%n",ratingService.getAverageRating("minesweeper"));
 
         System.exit(0);
 
@@ -402,7 +404,7 @@ public class ConsoleUI implements UserInterface {
     private void processInput() {
         System.out.println("Zadaj svoj vstup.");
         System.out.println("Ocakavany vstup:  X - ukoncenie hry, M - mark, O - open, U - unmark. Napr.: MA1 - oznacenie dlazdice v riadku A a stlpci 1");
-        String playerInput = readLine();
+        String playerInput = readLine().toUpperCase(Locale.ROOT);
 
 
         if (playerInput.trim().equals("X")) {

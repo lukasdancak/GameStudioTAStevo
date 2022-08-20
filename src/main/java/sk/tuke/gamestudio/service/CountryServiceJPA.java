@@ -25,7 +25,12 @@ public class CountryServiceJPA implements CountryService{
 
     @Override
     public void addCountry(Country country) {
-        entityManager.persist(country);
+        try {
+            entityManager.persist(country);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.printf("Objekt s menom krajiny %s uz existuje, zapis neprebehol.%n", country.getCountry());
+        }
 
     }
 

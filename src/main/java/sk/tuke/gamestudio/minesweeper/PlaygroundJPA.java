@@ -1,6 +1,9 @@
 package sk.tuke.gamestudio.minesweeper;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import sk.tuke.gamestudio.entity.*;
+import sk.tuke.gamestudio.service.PlayerService;
+import sk.tuke.gamestudio.service.RatingService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -21,6 +24,11 @@ public class PlaygroundJPA {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    RatingService ratingService;
+
+    @Autowired
+    PlayerService playerService;
 
     private String readLine() {
         try {
@@ -32,6 +40,24 @@ public class PlaygroundJPA {
 
     public void play(){
         System.out.println("Opening JPA playground.");
+
+        System.out.println("tlacim vsetkych playerov");
+        List<Player> playerList = null;
+        try {
+            playerList = playerService.getPlayersByUserName("Lukas");
+            System.out.println("Spojenie s DB OK");
+        } catch (Exception e) {
+            //e.printStackTrace();
+            System.out.println("chyba v spojeni s DB");
+        }
+        if (playerList!=null) {System.out.println(playerList);} else {
+            System.out.println("playerList je null");
+        }
+
+        //entityManager.persist(new Country("Slovakia"));
+
+
+       // System.out.printf("Vypisujem priemerny rating-ako INT: %s%n",ratingService.getAverageRating("minesweeper"));
 
 
 

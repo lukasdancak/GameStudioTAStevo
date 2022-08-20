@@ -33,7 +33,7 @@ public class Comment implements Serializable {
 
     @Override
     public String toString() {
-        return "Score{" +
+        return "Comment{" +
                 "game='" + game + '\'' +
                 ", username='" + username + '\'' +
                 ", comment=" + comment +

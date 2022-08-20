@@ -18,7 +18,7 @@ public class PlayerServiceJPA implements PlayerService{
     @Override
     public List<Player> getPlayersByUserName(String uName) {
         return entityManager
-                .createQuery("select p from Player p where p.userName = :uName")
+                .createQuery("select p from Player p where p.username = :uName")
                 .setParameter("uName", uName).getResultList()
                 ;
 
