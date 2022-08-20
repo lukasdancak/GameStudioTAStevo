@@ -20,6 +20,8 @@ public class ScoreWebServiceRest {
         return scoreService.getBestScores (game);
     }
 
+
+
     /*
     //http://localhost:8080/api/score?game=minesweeper
     @GetMapping

@@ -115,7 +115,7 @@ public class ConsoleUI implements UserInterface {
 
 
         // situacia ak nenajde ziadneho hraca s danym username v databaze
-        if (listOfPlayersFindedByUserName == null) {
+        if (listOfPlayersFindedByUserName == null || listOfPlayersFindedByUserName.size()==0) {
             System.out.printf("Nenasiel som v databaze Player hraca s username %s%n", userName);
             System.out.println("Musim vytvorit objekt Player s tvojimi datami");
            Player newPlayer = pridanieNovehoHracaDoDatabazy(userName);
@@ -403,7 +403,7 @@ public class ConsoleUI implements UserInterface {
      */
     private void processInput() {
         System.out.println("Zadaj svoj vstup.");
-        System.out.println("Ocakavany vstup:  X - ukoncenie hry, M - mark, O - open, U - unmark. Napr.: MA1 - oznacenie dlazdice v riadku A a stlpci 1");
+        System.out.println("Ocakavany vstup:  X - ukoncenie hry, M - mark/unmark, O - open. Napr.: MA1 - oznacenie dlazdice v riadku A a stlpci 1");
         String playerInput = readLine().toUpperCase(Locale.ROOT);
 
 

@@ -53,7 +53,7 @@ public class SpringClient {
     }
     @Bean
     public RatingService ratingService(){
-        return new RatingServiceJPA();
+        return new RatingServiceREST();
     }
 
     @Bean

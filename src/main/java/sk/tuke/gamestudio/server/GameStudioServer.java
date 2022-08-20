@@ -10,10 +10,7 @@ import org.springframework.context.annotation.Bean;
 import sk.tuke.gamestudio.SpringClient;
 import sk.tuke.gamestudio.minesweeper.PlaygroundJPA;
 import sk.tuke.gamestudio.minesweeper.consoleui.ConsoleUI;
-import sk.tuke.gamestudio.service.CommentService;
-import sk.tuke.gamestudio.service.CommentServiceJPA;
-import sk.tuke.gamestudio.service.ScoreService;
-import sk.tuke.gamestudio.service.ScoreServiceJPA;
+import sk.tuke.gamestudio.service.*;
 
 import javax.persistence.Entity;
 
@@ -37,6 +34,12 @@ public class GameStudioServer {
     @Bean
     public CommentService commentService(){
         return new CommentServiceJPA();
+
+    }
+
+    @Bean
+    public RatingService ratingService(){
+        return new RatingServiceJPA();
 
     }
 
