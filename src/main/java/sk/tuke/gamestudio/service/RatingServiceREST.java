@@ -16,7 +16,7 @@ public class RatingServiceREST implements RatingService {
 
     @Override
     public void setRating(Rating rating) {
-        restTemplate.postForObject(url + "/rating/" + rating.getGame() + "/" + rating.getUsername(), rating, Rating.class);
+        restTemplate.postForEntity(url + "/rating", rating, Rating.class);
     }
 
     @Override

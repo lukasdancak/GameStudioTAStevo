@@ -7,14 +7,38 @@
     <link rel="stylesheet"
           href="/css/mines.css"
           media="screen" />
+
+
     <title>GameStudio - Minesweeper</title>
 </head>
-<body>
-<h2>Minesweeper</h2>
-<div th:utext=${"@minesweeperControllergetFieldAsHtml"}></div>
 
-<!--<div th:text="${1+2}"></divth:text></div>-->
-<!--<div th:text=${"@minesweeperConroller.getCurrTime"}></div>-->
+<body>
+
+<h2>Minesweeper</h2>
+
+<div class="minesControl">
+    <span th:if="${@minesweeperController.marking}">
+        Prave oznacujes.
+        <a  class="abutton" href="/minesweeper/mark">Zmen na otvaranie.</a>
+    </span>
+
+    <span th:if="not ${@minesweeperController.marking}">
+        Prave otvaras.
+        <a  class="abutton" href="/minesweeper/mark">Zmen na oznacovanie.</a>
+    </span>
+
+
+    <a  class="abutton" href="/minesweeper/new">Nova hra</a>
+
+</div>
+
+<div th:utext="${@minesweeperController.fieldAsHtml}">
+
+
+    <!--<div th:text="${1+2}"></div>-->
+    <!--<div th:text="${@minesweeperController.getCurrTime()}"></div>-->
+    <!--<div th:text="${@minesweeperController.currTime}"></div>-->
+
 
 </body>
 </html>

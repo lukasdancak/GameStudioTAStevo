@@ -1,166 +1,250 @@
-<!DOCTYPE HTML>
-<html lang="sk">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Stefan Korecko" />
-    <link rel="stylesheet"
-          href="css/introPages.css"
-          media="screen" />
+    <meta charset="UTF-8">
+    <style>
+    html {
+            background-image: url('fractal.gif');
+    background-size: cover;
+        background-repeat: no-repeat;
+    background-attachment: fixed;
 
 
-    <title>O mne</title>
+
+    height: 100vh;
+    padding:0;
+    margin:0;
+        }
+
+        body {max-width: 800px; margin-left:auto;margin-right:auto;}
+        table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+        }
+        table:hover {  transform: rotate(45deg); /* Equal to rotateZ(45deg) */}
+        main{background-color:gray;}
+        footer{background-color: lime;}
+        div {display:block;}
+        div#banner{ background-color:green;text-align:center;
+         padding: 50px 0;}
+
+        span#bannertext {color:red; background-color:white; font-size: 48px; border-radius: 25px;
+                            padding:5px; font-family: sans-serif;}
+
+        nav, main, footer {border: 3px solid green;
+             margin-top:10px; padding:3px}
+        nav{padding:5px; background-color:yellow;}
+        section {background-color:silver; border: 3px solid blue;  margin-top:10px; margin:5px; padding:5px;}
+
+
+          nav ul, nav li{ display: inline; font-size: 1.25em;}
+          nav li a{background-color:green; color:fuchsia ; padding:4px; border-radius: 15px; }
+           nav li a:hover{background-color:	fuchsia ; color:green; padding:2px; border-radius: 15px;}
+
+           table {margin-left:auto;margin-right:auto;  }
+
+           footer li{font-size:1.25rem; }
+           footer li:before { content: '\1F60E'; margin-left: -20px; margin-right: 10px; }
+
+           img{float:left; margin:5px;}
+           table{  border: 3px solid black; table-layout: auto;  width: 98%;
+           margin-left:auto;margin-right:auto;
+           margin-bottom:5px;
+              }
+
+              th#firstcolumn {width:25%;}
+
+
+
+
+
+
+
+
+
+    </style>
+    <title>Homepage - LukasDancak.sk</title>
 </head>
-
 <body>
 <header>
-    <h1>Moje obľúbené stromy</h1>
-<div class="menu">
-    <button id="menuTitle" onclick="displayOrHideMenu()">Ponuka článkov</button>
-    <nav id="menuIts" class="menu mnHide">
-            <a href="#artUvod">Vitajte!</a>
-            <a href="#artBorovica">Borovica</a>
-            <a href="#artDub">Dub</a>
-    </nav>
-</div>
-
+    <div id="banner">
+        <span id="bannertext">&nbsp;Personal page of Lukas Dancak&nbsp;</span>
+    </div>
 </header>
+<nav>
+    <div id="menu">
 
+        <ul>
+            <a>Menu: </a>
+            <li><a href="homepage.html">Homepage</a></li>
+            <li><a href="#AboutMe">O mne</a></li>
+            <li><a href="#MySkills">My skills</a></li>
+            <li><a href="#MyHardware">My hardware</a></li>
+            <li><a href="#MyWork">My work</a></li>
+            <li><a href="#Kontakt">Kontakt</a></li>
+        </ul>
+    </div>
 
-
+</nav>
 
 <main>
-    <article  id="artUvod">
-        <h2>Vitajte!</h2> <!--Pôvodne tu aj v ďalších articles bolo h1, to však vyvolá warning pri validácii
-                              lebo "all h1 elements are treated as top-level headings by many
-                              screen readers and other tools". -->
+    <h1>Welcome To My Personal Page &#127867;</h1>
+
+    <section id="AboutMe">
+        <h2>About me</h2>
+        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."</p>
+    </section>
+
+    <section id="MySkills">
+        <h2>My skills</h2>
+        <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."</p>
+        <table>
+            <caption>My Skills</caption>
+            <thead>
+            <tr>
+                <th id="firstcolumn">Technology</th>
+                <th>Level</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <tr>
+                <td>Java</td>
+                <td style="  background-image: linear-gradient(to right, green 90% , red)">90%</td>
+            </tr>
+
+            <tr>
+                <td>SQL</td>
+                <td style="  background-image: linear-gradient(to right, green 50% , red)">50%</td>
+
+            </tr>
+
+            <tr>
+                <td>HTML</td>
+                <td style="  background-image: linear-gradient(to right, green 75% , red)">75%</td>
+
+            </tr>
+
+            <tr>
+                <td>CSS</td>
+                <td style="  background-image: linear-gradient(to right, green 25% , red)">25%</td>
+
+            </tr>
+            </tbody>
+
+        </table>
+
+    </section>
+
+    <section id="MyHardware">
+        <h2>My Hardware:</h2>
         <p>
-            Vitajte na mojej stránke. Volám sa <b><i>Ján ŠK. Trieska</i>
-        </b>, bývam v <i>Drevníku nad Pilinami</i> a pracujem
-            ako <i>drevorubač</i>. Milujem stromy a preto som sa
-            rozhodol pripraviť pre vás malý prehľad mojich
-            najobľúbenejších.
+            <img srcset="myhardware-480w.jpg 480w,
+             myhardware-800w.jpg 800w"
+                 sizes="(max-width: 600px) 480px,
+            800px"
+                 src="myhardware-800w.jpg"
+                 alt="My hardware for developing">
+
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+            ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+            nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+            anim id est laborum."
+
+
+            <br style="clear: both;"/>
         </p>
-        <footer class="menuLink"><a href="#menuTitle">Späť na menu</a></footer>
-    </article>
+    </section>
 
-    <article  id="artBorovica">
-        <h2>Borovica</h2>
-        <figure>
-            <img src="fig/pineBw.png" height="150"
-                 title="obr.borovica" alt="borovica" />
-        </figure>
-
-        <section>
-
-            <header><h2>Základné údaje</h2></header> <!--Podobne ako vyššie, aj tu pôvodne bolo h1 -->
-
-            <p>
-                Borovica je ihličnatý strom s mäkkým drevom. Jej ihličie opadáva každé  2 až 4 roky.
-            </p>
-
-            <dl> <!-- zoznam moze byt iba mimo odsekov -->
-                <dt>Latinský názov: <!-- uzatvaracia znacka nemusi byt uvedena -->
-                <dd>Pinus.
-                <dt>Oddelenie:</dt>
-                <dd>Borovicorasty (ihličiny)</dd>
-                <dt>Čeľaď:</dt>
-                <dd>Borovicovité.</dd>
-
-
-            </dl>
-
-            <article >
-                <h2>Kde rastú borovice</h2><!-- Pôvodne tu nadpis nebol.
-                                                   Ale article by nadpis mal mať
-                                                   (bez neho generuje warning pri validácii) -->
-                <p>Borovice rastú v</p>
-                <ol>
-                    <li>Európe a
-                    <li>Ázii.
-                </ol>
-            </article>
-        </section>
-
-        <section>
-            <h2>Môj názor</h2>
-
-            <p>
-                Borovice mám veľmi rád, lebo
-            </p>
-
-            <ul>
-                <li>majú dlhé ihličie,
-                <li>pekne voňajú a
-                <li>majú mäkké drevo cez ktoré sa dobre prerezáva píla.
-            </ul>
-        </section>
-
-        <footer  class="menuLink"><a href="#menuTitle">Späť na menu</a></footer>
-    </article>
-
-    <article  id="artDub">
-        <h2>Dub</h2>
-        <figure>
-            <img src="fig/oak.png" height="150"
-                 title="obr.dub" alt="dub" />
-        </figure>
+    <section id="MyWork">
+        <h2>My work:</h2>
+        <h3>SVG vs Canvas</h3>
         <p>
-            Dub je listnatý strom s tvrdým drevom, vyznačujúci sa dlhovekosťou a
-            pomalým rastom. Jeho listy sú jednoduché, laločnaté, u nás v zime
-            opadávajú.
+
+
+        <h4>
+            SVG Circle(Geeks For Geeks)
+        </h4>
+
+        <svg id="svgelem" height="200">
+            <circle id="greencircle" cx="60"
+                    cy="60" r="50" fill="green"/>
+        </svg>
+
+        <h4>Canvas Square(Geeks For Geeks)</h4>
+
+        <canvas id="newCanvas" width="100" height="100"
+                style="border:1px solid #000000;">
+        </canvas>
+
+        <script>
+        var c = document.getElementById('newCanvas');
+        var ctx = c.getContext('2d');
+        ctx.fillStyle = '#7cce2b';
+        ctx.fillRect(0, 0, 100, 100);
+
+        </script>
+
         </p>
-        <footer  class="menuLink"><a href="#menuTitle">Späť na menu</a></footer>
-    </article>
+    </section>
+
+
 </main>
 
-<footer>
-    Ján ŠK. Trieska <br>
-    (c) 2017-22
+<footer id="Kontakt">
+    <h2>Moje kontaktne info:</h2>
+    <ul>
+        <li>📧 Email: <a href="mailto:lukas.dancak@gmail.com"
+                         target="_top">lukas.dancak@gmail.com</a></li>
+        <li>📞 Telefon: <a href="#"
+                           target="_top">0911 848 584</a></li>
+
+    </ul>
 </footer>
-
-
-<!--
-<iframe  src="50ahojSvet.html" width="300" height="500"
-         name="stranka">
-</iframe>
--->
-
-<script>
-
-    function displayOrHideMenu(){
-        document.getElementById("menuIts").classList.toggle("mnShow");
-    }
-
-    function hideMenu() {
-        const menuClElmCList=document.getElementById("menuIts").classList;
-        if(menuClElmCList.contains("mnShow")) menuClElmCList.remove("mnShow");
-
-    }
-
-    document.addEventListener("click", //radsej takto ako do document.onclick, lebo to by vyradilo iné listenery
-            function(udalost){
-                if(!udalost.target.matches("#menuIts, #menuTitle")){
-                    console.log("nesedi")
-                    hideMenu();
-                }
-            }
-    );
-
-    document.addEventListener("click", //vypise do konzoly na co som klikol
-            function(udalost){
-                console.log(udalost.target);
-            }
-    );
-
-
-
-    /*
-    * Pozor: ani jeden z listenerov nebude reagovat na kliknutia v dokumentoch, ktore by tu boli vlozene cez iframe.
-    * A to ani v pripade ak document.addEventListener zamenime za window.addEventListener.
-    */
-
-</script>
 
 </body>
 </html>
