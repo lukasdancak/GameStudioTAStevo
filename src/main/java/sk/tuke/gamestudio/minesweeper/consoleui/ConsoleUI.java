@@ -168,7 +168,7 @@ public class ConsoleUI implements UserInterface {
                 gameShouldContinue = false;
             }
             if (fieldState == GameState.SOLVED) {
-                gameScore = this.field.getScore();
+                gameScore = this.field.calcualteScore();
                 System.out.println(userName + ", vyhral si. Tvoje skore je " + gameScore + ".");
                 gameShouldContinue = false;
             }

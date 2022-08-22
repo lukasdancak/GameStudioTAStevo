@@ -36,6 +36,8 @@ public class Field {
      */
     private long startMillis;
 
+    private int score =0;
+
     /**
      * Constructor.
      *
@@ -51,6 +53,10 @@ public class Field {
 
         //generate the field content
         generate();
+    }
+
+    public Tile[][] getTiles() {
+        return tiles;
     }
 
     public int getRowCount() {
@@ -86,11 +92,13 @@ public class Field {
 
             if (tile instanceof Mine) {
                 state = GameState.FAILED;
+               this.score = this.calcualteScore();
                 return;
             }
 
             if (isSolved()) {
                 state = GameState.SOLVED;
+               this.score = this.calcualteScore();
                 return;
             }
         }
@@ -221,9 +229,14 @@ public class Field {
 
 
 
-    public int getScore() {
-        return rowCount * columnCount * 10 - getPlayTimeInSeconds();
+    public int calcualteScore() {
+
+        if (this.getState() == GameState.SOLVED) {
+            return rowCount * columnCount * 10 - getPlayTimeInSeconds();
+        } else {return 0;}
     }
 
-
+    public int getScore() {
+        return score;
+    }
 }

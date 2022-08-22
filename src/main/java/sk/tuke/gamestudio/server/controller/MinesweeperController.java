@@ -1,13 +1,18 @@
 package sk.tuke.gamestudio.server.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
+import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.minesweeper.core.Clue;
 import sk.tuke.gamestudio.minesweeper.core.Field;
+import sk.tuke.gamestudio.minesweeper.core.GameState;
 import sk.tuke.gamestudio.minesweeper.core.Tile;
+import sk.tuke.gamestudio.service.ScoreService;
 
 import java.util.Date;
 
@@ -16,12 +21,17 @@ import java.util.Date;
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class MinesweeperController {
 
+    @Autowired
+    ScoreService scoreService;
+
     private Field field = new Field(9,9,10);
 
     private boolean marking = false;
 
+    private GameState gameState = GameState.PLAYING;
+
     @RequestMapping
-    public String minesweeper(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column){
+    public String minesweeper(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model){
 
         if(row != null && column != null){
 
@@ -32,18 +42,25 @@ public class MinesweeperController {
             }
         }
 
+        if (field.getState() != GameState.PLAYING && field.getScore()!=0){
+            scoreService.addScore( new Score("minesweeper", "ANONYMOUS", field.getScore(), new Date()));
+        }
+
+        prepareModel(model);
         return "minesweeper";
     }
 
     @RequestMapping("/mark")
-    public  String changeMarking(){
+    public  String changeMarking(Model model){
         marking = !marking;
+        prepareModel(model);
         return "minesweeper";
     }
 
     @RequestMapping("/new")
-    public  String newGame(){
+    public  String newGame(Model model){
         field = new Field(9,9,10);
+        prepareModel(model);
         return "minesweeper";
     }
 
@@ -108,7 +125,7 @@ public class MinesweeperController {
         return sb.toString();
     }
 
-    private String getTileText(Tile tile){
+    public String getTileText(Tile tile){
         switch (tile.getState()){
             case CLOSED:
                 return "-";
@@ -125,7 +142,7 @@ public class MinesweeperController {
         }
     }
 
-    private String getTileClass(Tile tile) {
+    public String getTileClass(Tile tile) {
         switch (tile.getState()) {
             case OPEN:
                 if (tile instanceof Clue)
@@ -139,6 +156,26 @@ public class MinesweeperController {
             default:
                 throw new RuntimeException("Unexpected tile state");
         }
+    }
+
+    private void prepareModel(Model model){
+
+        model.addAttribute("minesweeperField", field.getTiles());
+
+        boolean shouldContinue=true;
+        if(field.getState()==GameState.FAILED ||field.getState()==GameState.SOLVED){
+            shouldContinue=false;
+
+        }
+        int win1vslose2 = 0;
+        if(field.getState() == GameState.SOLVED){win1vslose2=1;}
+        if(field.getState() == GameState.FAILED){win1vslose2=2;}
+        model.addAttribute("minesweeperWinLose", win1vslose2);
+        model.addAttribute("minesweeperShouldContinue", shouldContinue);
+        model.addAttribute("minesweeperTopScores", scoreService.getBestScores("minesweeper"));
+        model.addAttribute("minesweeperPlayerScore", String.valueOf(field.getScore()));
+
+
     }
 
 

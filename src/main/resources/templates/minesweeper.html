@@ -16,6 +16,7 @@
 
 <h2>Minesweeper</h2>
 
+
 <div class="minesControl">
     <span th:if="${@minesweeperController.marking}">
         Prave oznacujes.
@@ -32,7 +33,70 @@
 
 </div>
 
-<div th:utext="${@minesweeperController.fieldAsHtml}">
+
+<br>
+<div style="color: red;" th:if= "${minesweeperShouldContinue}">
+    <p >Hra zacala!!!</p>
+</div>
+
+<div style="color: red;" th:if= "not ${minesweeperShouldContinue}">
+
+    <p th:if="${minesweeperWinLose == 2}">  Hru si prehral, nie je mozne dalej hrat.</p>
+    <p th:if="${minesweeperWinLose == 1}">  Hru si vyhral, nie je mozne dalej hrat.</p>
+
+    <p th:text="'Tvoje skore je: ' + ${minesweeperPlayerScore}"></p>
+</div>
+<br>
+
+
+
+<!--<div th:utext="${@minesweeperController.fieldAsHtml}"></div>-->
+
+
+
+<div>
+    <table class='minefield'>
+        <tr th:each="row: ${minesweeperField}">
+            <td th:each="tile: ${row}"
+                th:attr="class=${@minesweeperController.getTileClass(tile)}">
+
+                <a th:if="${minesweeperShouldContinue}"  th:attr="href='/minesweeper/?row='+${rowStat.index}+'&column='+${tileStat.index}">
+                    <span th:text="${@minesweeperController.getTileText(tile)}"></span>
+                </a>
+
+                <a th:if= "not ${minesweeperShouldContinue}"   >
+                    <span th:text="${@minesweeperController.getTileText(tile)}"></span>
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+
+
+
+<br>
+<table>
+    <thead>
+    <tr>
+        <th> Username </th>
+        <th> Score </th>
+        <th> Played On</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${minesweeperTopScores.empty}">
+        <td colspan="2"> No Scores Available </td>
+    </tr>
+    <tr th:each="book : ${minesweeperTopScores}">
+        <td><span th:text="${book.username}"> Username </span></td>
+        <td><span th:text="${book.points}"> Score </span></td>
+        <td><span th:text="${book.playedOn}"> Played On </span></td>
+    </tr>
+    </tbody>
+</table>
 
 
     <!--<div th:text="${1+2}"></div>-->
