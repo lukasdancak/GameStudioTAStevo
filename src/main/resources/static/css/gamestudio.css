@@ -280,6 +280,111 @@ table.minefield td.mine {
     }
 }
 
+/*styl pre pole Kamenov*/
+
+table.kamene td {
+text-align: center;
+background-color: lightgray;
+width: 3em;
+height: 3em;
+font-size: 2.1em;
+border-radius: 0.2em;
+}
+
+table.kamene a:link,
+table.kamene a:visited,
+table.kamene a:link:hover,
+table.kamene a:visited:hover {
+color: inherit;
+font-weight: normal;
+text-decoration: none;
+}
+
+table.kamene a {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+height: 100%;
+}
+
+table.kamene td.closed {
+background-color: darkgray;
+color: darkgray;
+}
+
+table.kamene td.closed:hover {
+background-color: springgreen;
+}
+
+table.kamene td.closed span {
+display: none;
+}
+
+table.kamene td.mine {
+background-color: red;
+background-image: url("/fig/minesweeper/mine.svg");
+background-repeat: no-repeat;
+background-position: center;
+background-size: 80%;
+}
+
+table.kamene td.mine span {
+display: none;
+}
+
+table.kamene td.marked {
+background-color: coral;
+background-image: url("/fig/minesweeper/flag.svg");
+background-repeat: no-repeat;
+background-position: center;
+background-size: 60%;
+}
+
+table.kamene td.marked span {
+display: none;
+}
+
+table.kamene td.open0 {
+color: lightgray;
+}
+
+table.kamene td.open0 span {
+display: none;
+}
+
+table.kamene td.open1 {
+color: blue;
+}
+
+table.kamene td.open2 {
+color: red;
+}
+
+table.kamene td.open3 {
+color: green;
+}
+
+table.kamene td.open4 {
+color: cyan;
+}
+
+table.kamene td.open5 {
+color: purple;
+}
+
+table.kamene td.open6 {
+color: orange;
+}
+
+table.kamene td.open7 {
+color: pink;
+}
+
+table.kamene td.open8 {
+color: yellow;
+}
+
 
 
 

@@ -92,12 +92,28 @@
     </table>
 </div>
 
+    <h3>Mozes zadat svoj komentar:</h3>
+    <form action="/minesweeper/sendcomment" method="post">
+        <label for="yourcomment">Your Comment:</label> <textarea id="yourcomment" maxlength="1000"  name="comment" ></textarea> <br/>
+<!--        <label for="yourrating">Your Rating: </label> <input id="yourrating" type="number" name="rating"/> <br/>-->
+        <button type="submit">Odoslat</button>
+    </form>
 
+    <br>
+    <h3>Mozes zadat svoj rating hry:</h3>
+    <form action="/minesweeper/sendrating" method="post">
+    <label for="yourrating">Your Rating: </label> <input id="yourrating" type="number" name="rating" min="1" max="5"/> <br/>
+        <button type="submit">Odoslat</button>
+    </form>
 
+<br>
+<h3>Average Rating:</h3>
+<span th:text="'Priemerny rating hry je: ' + ${minesweeperAverageRating}"></span>
 
 
 
 <br>
+    <h3>Scores:</h3>
 <table class="scores">
     <thead>
     <tr>
@@ -110,13 +126,42 @@
     <tr th:if="${minesweeperTopScores.empty}">
         <td colspan="2"> No Scores Available </td>
     </tr>
-    <tr th:each="book : ${minesweeperTopScores}">
-        <td><span th:text="${book.username}"> Username </span></td>
-        <td><span th:text="${book.points}"> Score </span></td>
-        <td><span th:text="${book.playedOn}"> Played On </span></td>
+    <tr th:each="item : ${minesweeperTopScores}">
+        <td><span th:text="${item.username}">  </span></td>
+        <td><span th:text="${item.points}"> </span></td>
+        <td><span th:text="${item.playedOn}">  </span></td>
     </tr>
     </tbody>
 </table>
+
+    <br>
+    <h3>Comments:</h3>
+    <table class="scores">
+        <thead>
+        <tr>
+            <th> Username </th>
+            <th> Comment </th>
+            <th> Commented On</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${minesweeperTopScores.empty}">
+            <td colspan="2"> No Comments Available </td>
+        </tr>
+        <tr th:each="item : ${minesweeperAllComments}">
+            <td><span th:text="${item.username}"> </span></td>
+            <td><span th:text="${item.comment}">  </span></td>
+            <td><span th:text="${item.commentedOn}"> </span></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+
+
+
+
+
 
 
     <!--<div th:text="${1+2}"></div>-->

@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutGamestudio.html}"
+      lang="sk">
+<head>
+
+
+    <title>GameStudio - Kamene</title>
+</head>
+
+<body>
+
+
+<main layout:fragment="content">
+
+
+
+<h2>Kamene</h2>
+
+
+<div>
+    <table class='kamene'>
+        <tr th:each="row: ${kameneField}">
+            <td th:each="tile: ${row}">
+
+                <span th:text="${@kameneController.getTileNum(tile)}"></span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+    <div>
+        <h3>Ovladanie</h3>
+        <ul>
+            <li>  <a href="/kamene/tileup">Up</a></li>
+            <li>  <a href="/kamene/tiledown">Down</a></li>
+            <li>  <a href="/kamene/tileleft">Left</a></li>
+            <li>  <a href="/kamene/tileright">Right</a></li>
+        </ul>
+    </div>
+
+
+
+<!--<br>-->
+<!--<h3>Average Rating:</h3>-->
+<!--<span th:text="'Priemerny rating hry je: ' + ${minesweeperAverageRating}"></span>-->
+
+
+
+<!--<br>-->
+<!--    <h3>Scores:</h3>-->
+<!--<table class="scores">-->
+<!--    <thead>-->
+<!--    <tr>-->
+<!--        <th> Username </th>-->
+<!--        <th> Score </th>-->
+<!--        <th> Played On</th>-->
+<!--    </tr>-->
+<!--    </thead>-->
+<!--    <tbody>-->
+<!--    <tr th:if="${minesweeperTopScores.empty}">-->
+<!--        <td colspan="2"> No Scores Available </td>-->
+<!--    </tr>-->
+<!--    <tr th:each="item : ${minesweeperTopScores}">-->
+<!--        <td><span th:text="${item.username}">  </span></td>-->
+<!--        <td><span th:text="${item.points}"> </span></td>-->
+<!--        <td><span th:text="${item.playedOn}">  </span></td>-->
+<!--    </tr>-->
+<!--    </tbody>-->
+<!--</table>-->
+
+<!--    <br>-->
+<!--    <h3>Comments:</h3>-->
+<!--    <table class="scores">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th> Username </th>-->
+<!--            <th> Comment </th>-->
+<!--            <th> Commented On</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr th:if="${minesweeperTopScores.empty}">-->
+<!--            <td colspan="2"> No Comments Available </td>-->
+<!--        </tr>-->
+<!--        <tr th:each="item : ${minesweeperAllComments}">-->
+<!--            <td><span th:text="${item.username}"> </span></td>-->
+<!--            <td><span th:text="${item.comment}">  </span></td>-->
+<!--            <td><span th:text="${item.commentedOn}"> </span></td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+
+
+
+
+
+
+
+
+
+    <!--<div th:text="${1+2}"></div>-->
+    <!--<div th:text="${@minesweeperController.getCurrTime()}"></div>-->
+    <!--<div th:text="${@minesweeperController.currTime}"></div>-->
+
+<!--<footer th:replace="fragments/fragments :: footer" />-->
+</main>
+</body>
+</html>

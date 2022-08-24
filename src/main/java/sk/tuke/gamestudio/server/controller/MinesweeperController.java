@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
+import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.minesweeper.core.Clue;
 import sk.tuke.gamestudio.minesweeper.core.Field;
@@ -38,6 +40,24 @@ public class MinesweeperController {
     private boolean marking = false;
 
     private GameState gameState = GameState.PLAYING;
+
+    @RequestMapping("/sendcomment")
+    public String createComment(String comment){
+        commentService.addComment( new Comment("minesweeper", userController.getLoggedUser(), comment, new Date()) );
+
+
+        return "redirect:/minesweeper";
+    }
+
+    @RequestMapping("/sendrating")
+    public String createOrUpdateRating(int rating){
+        if(rating>0 && rating <6) {
+            ratingService.setRating(new Rating("minesweeper", userController.getLoggedUser(), rating, new Date()));
+        }
+
+        return "redirect:/minesweeper";
+    }
+
 
     @RequestMapping
     public String minesweeper(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model){
