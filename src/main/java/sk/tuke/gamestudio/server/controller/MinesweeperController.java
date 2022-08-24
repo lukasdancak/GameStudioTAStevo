@@ -12,6 +12,8 @@ import sk.tuke.gamestudio.minesweeper.core.Clue;
 import sk.tuke.gamestudio.minesweeper.core.Field;
 import sk.tuke.gamestudio.minesweeper.core.GameState;
 import sk.tuke.gamestudio.minesweeper.core.Tile;
+import sk.tuke.gamestudio.service.CommentService;
+import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
 import java.util.Date;
@@ -23,6 +25,13 @@ public class MinesweeperController {
 
     @Autowired
     ScoreService scoreService;
+    @Autowired
+    CommentService commentService;
+    @Autowired
+    RatingService ratingService;
+
+    @Autowired
+    private UserController userController;
 
     private Field field = new Field(9,9,10);
 
@@ -43,7 +52,12 @@ public class MinesweeperController {
         }
 
         if (field.getState() != GameState.PLAYING && field.getScore()!=0){
-            scoreService.addScore( new Score("minesweeper", "ANONYMOUS", field.getScore(), new Date()));
+
+            if(userController.isLogged()) {
+                scoreService.addScore( new Score("minesweeper", userController.getLoggedUser(), field.getScore(), new Date()));
+
+            }
+
         }
 
         prepareModel(model);
@@ -173,6 +187,11 @@ public class MinesweeperController {
         model.addAttribute("minesweeperWinLose", win1vslose2);
         model.addAttribute("minesweeperShouldContinue", shouldContinue);
         model.addAttribute("minesweeperTopScores", scoreService.getBestScores("minesweeper"));
+        model.addAttribute("minesweeperAllComments", commentService.getComments("minesweeper"));
+        model.addAttribute("minesweeperAverageRating", ratingService.getAverageRating("minesweeper"));
+
+
+
         model.addAttribute("minesweeperPlayerScore", String.valueOf(field.getScore()));
 
 

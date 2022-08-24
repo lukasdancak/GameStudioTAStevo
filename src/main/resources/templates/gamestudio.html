@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutGamestudio.html}"
+      lang="sk">
+<head>
+    <title>GameStudio - Minesweeper</title>
+</head>
+
+<body>
+
+<main layout:fragment="content">
+
+    <form action="/login" method="post">
+        <label for="login">Meno:</label> <input id="login" type="text" name="login" /> <br/>
+        <label for="pass">Heslo: </label> <input id="pass" type="password" name="password"/> <br/>
+        <button type="submit">Prihlasit sa</button>
+    </form>
+
+    <h2>Hry:</h2>
+    <ul>
+        <li><a href="/minesweeper">Minesweeper</a></li>
+        <li>Kamene</li>
+    </ul>
+</main>
+
+</body>
+</html>
