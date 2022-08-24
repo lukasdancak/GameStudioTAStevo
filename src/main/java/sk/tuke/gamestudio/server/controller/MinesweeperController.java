@@ -62,6 +62,10 @@ public class MinesweeperController {
     @RequestMapping
     public String minesweeper(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model){
 
+        if(userController.getLoggedUser()==null){
+            return "redirect:/gamestudio";
+        }
+
         if(row != null && column != null){
 
             if(marking){
@@ -204,11 +208,13 @@ public class MinesweeperController {
         int win1vslose2 = 0;
         if(field.getState() == GameState.SOLVED){win1vslose2=1;}
         if(field.getState() == GameState.FAILED){win1vslose2=2;}
+        String averageRating="V databaze nie su ziadne zaznamy ratingov";
+        averageRating = Integer.toString(ratingService.getAverageRating("minesweeper"));
         model.addAttribute("minesweeperWinLose", win1vslose2);
         model.addAttribute("minesweeperShouldContinue", shouldContinue);
         model.addAttribute("minesweeperTopScores", scoreService.getBestScores("minesweeper"));
         model.addAttribute("minesweeperAllComments", commentService.getComments("minesweeper"));
-        model.addAttribute("minesweeperAverageRating", ratingService.getAverageRating("minesweeper"));
+        model.addAttribute("minesweeperAverageRating", averageRating);
 
 
 

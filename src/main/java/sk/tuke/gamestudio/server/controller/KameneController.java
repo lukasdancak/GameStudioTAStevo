@@ -40,36 +40,38 @@ public class KameneController {
 
 
     @RequestMapping("/tileup")
-    public String moveTileUp(Model model){
+    public String moveTileUp(){
         field.moveUp();
-        prepareModel(model);
-        return"kamene";
+
+        return"redirect:/kamene";
     }
 
     @RequestMapping("/tiledown")
-    public String moveTileDown(Model model){
+    public String moveTileDown(){
         field.moveDown();
-        prepareModel(model);
-        return"kamene";
+
+        return"redirect:/kamene";
     }
 
     @RequestMapping("/tileleft")
-    public String moveTileLeft(Model model){
+    public String moveTileLeft(){
         field.moveLeft();
-        prepareModel(model);
-        return"kamene";
+
+        return"redirect:/kamene";
     }
 
     @RequestMapping("/tileright")
-    public String moveTileRight(Model model){
+    public String moveTileRight(){
         field.moveRight();
-        prepareModel(model);
-        return"kamene";
+
+        return"redirect:/kamene";
     }
 
     @RequestMapping
     public String kamene(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model){
-
+        if(userController.getLoggedUser()==null){
+            return "redirect:/gamestudio";
+        }
 
 
         prepareModel(model);

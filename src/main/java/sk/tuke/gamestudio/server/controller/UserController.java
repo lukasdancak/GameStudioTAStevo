@@ -16,7 +16,7 @@ public class UserController {
         if("heslo".equals(password)){
             this.loggedUser=login.trim();
             if(this.loggedUser.length()>0){
-                return "redirect:/minesweeper";
+                return "redirect:/gamestudio";
             }
 
         }
