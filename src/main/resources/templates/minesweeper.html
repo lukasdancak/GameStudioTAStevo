@@ -4,12 +4,12 @@
       layout:decorate="~{layout/layoutGamestudio.html}"
       lang="sk">
 <head>
-<!--    <meta charset="UTF-8" />-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
-<!--    <meta name="author" content="Stefan Korecko" />-->
-<!--    <link rel="stylesheet"-->
-<!--          href="/css/gamestudio.css"-->
-<!--          media="screen" />-->
+    <!--    <meta charset="UTF-8" />-->
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--    <meta name="author" content="Stefan Korecko" />-->
+    <!--    <link rel="stylesheet"-->
+    <!--          href="/css/gamestudio.css"-->
+    <!--          media="screen" />-->
 
 
     <title>GameStudio - Minesweeper</title>
@@ -24,105 +24,92 @@
 <!--<div th:insert="fragments/fragments :: header" />-->
 
 
-
-
 <main layout:fragment="content">
 
 
-
-<h2>Minesweeper</h2>
-
-
-<div class="minesControl">
+    <h2>Minesweeper</h2>
 
 
-    <span th:if="${@minesweeperController.marking} and ${minesweeperShouldContinue} " >
+    <div class="minesControl">
+
+
+    <span th:if="${@minesweeperController.marking} and ${minesweeperShouldContinue} ">
         Prave oznacujes.
-        <a  class="abutton" href="/minesweeper/mark">Zmen na otvaranie.</a>
+        <a class="abutton" href="/minesweeper/mark">Zmen na otvaranie.</a>
     </span>
 
-    <span th:if="not ${@minesweeperController.marking} and ${minesweeperShouldContinue}" >
+        <span th:if="not ${@minesweeperController.marking} and ${minesweeperShouldContinue}">
         Prave otvaras.
-        <a  class="abutton" href="/minesweeper/mark">Zmen na oznacovanie.</a>
+        <a class="abutton" href="/minesweeper/mark">Zmen na oznacovanie.</a>
     </span>
 
 
+        <a class="abutton" href="/minesweeper/new">Nova hra</a>
+
+    </div>
 
 
-    <a  class="abutton" href="/minesweeper/new">Nova hra</a>
+    <br>
+    <div style="color: red;" th:if="${minesweeperShouldContinue}">
+        <p>Hra zacala!!!</p>
+    </div>
 
-</div>
+    <div style="color: red;" th:if="not ${minesweeperShouldContinue}">
 
+        <p th:if="${minesweeperWinLose == 2}"> Hru si prehral, nie je mozne dalej hrat.</p>
+        <p th:if="${minesweeperWinLose == 1}"> Hru si vyhral, nie je mozne dalej hrat.</p>
 
-<br>
-<div style="color: red;" th:if= "${minesweeperShouldContinue}">
-    <p >Hra zacala!!!</p>
-</div>
-
-<div style="color: red;" th:if= "not ${minesweeperShouldContinue}">
-
-    <p th:if="${minesweeperWinLose == 2}">  Hru si prehral, nie je mozne dalej hrat.</p>
-    <p th:if="${minesweeperWinLose == 1}">  Hru si vyhral, nie je mozne dalej hrat.</p>
-
-    <p th:text="'Tvoje skore je: ' + ${minesweeperPlayerScore}"></p>
-</div>
-<br>
+        <p th:text="'Tvoje skore je: ' + ${minesweeperPlayerScore}"></p>
+    </div>
+    <br>
 
 
-
-<!--<div th:utext="${@minesweeperController.fieldAsHtml}"></div>-->
-
+    <!--<div th:utext="${@minesweeperController.fieldAsHtml}"></div>-->
 
 
-<div>
-    <table class='minefield'>
-        <tr th:each="row: ${minesweeperField}">
-            <td th:each="tile: ${row}"
-                th:attr="class=${@minesweeperController.getTileClass(tile)}">
+    <div>
+        <table class='minefield'>
+            <tr th:each="row: ${minesweeperField}">
+                <td th:each="tile: ${row}"
+                    th:attr="class=${@minesweeperController.getTileClass(tile)}">
 
-                <a th:if="${minesweeperShouldContinue}"  th:attr="href='/minesweeper/?row='+${rowStat.index}+'&column='+${tileStat.index}">
-                    <span th:text="${@minesweeperController.getTileText(tile)}"></span>
-                </a>
+                    <a th:if="${minesweeperShouldContinue}"
+                       th:attr="href='/minesweeper/?row='+${rowStat.index}+'&column='+${tileStat.index}">
+                        <span th:text="${@minesweeperController.getTileText(tile)}"></span>
+                    </a>
 
-                <a th:if= "not ${minesweeperShouldContinue}"  >
-                    <span th:text="${@minesweeperController.getTileText(tile)}"></span>
-                </a>
-            </td>
-        </tr>
-    </table>
-</div>
+                    <a th:if="not ${minesweeperShouldContinue}">
+                        <span th:text="${@minesweeperController.getTileText(tile)}"></span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
 
     <h3>Mozes zadat svoj komentar:</h3>
     <form action="/minesweeper/sendcomment" method="post">
-        <label for="yourcomment">Your Comment:</label> <textarea id="yourcomment" maxlength="1000"  name="comment" ></textarea> <br/>
-<!--        <label for="yourrating">Your Rating: </label> <input id="yourrating" type="number" name="rating"/> <br/>-->
+        <label for="yourcomment">Your Comment:</label> <textarea id="yourcomment" maxlength="1000"
+                                                                 name="comment"></textarea> <br/>
+        <!--        <label for="yourrating">Your Rating: </label> <input id="yourrating" type="number" name="rating"/> <br/>-->
         <button type="submit">Odoslat</button>
     </form>
 
     <br>
     <h3>Mozes zadat svoj rating hry:</h3>
     <form action="/minesweeper/sendrating" method="post">
-    <label for="yourrating">Your Rating: </label> <input id="yourrating" type="number" name="rating" min="1" max="5"/> <br/>
+        <label for="yourrating">Your Rating: </label> <input id="yourrating" type="number" name="rating" min="1"
+                                                             max="5"/> <br/>
         <button type="submit">Odoslat</button>
     </form>
 
-<br>
-<h3>Average Rating:</h3>
-<span th:text="'Priemerny rating hry je: ' + ${AverageRating}"></span>
+    <!--Int AverageRating z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: avgrating(${AverageRating})"/>
 
+    <!--Objekt TopScores z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: scores(${TopScores})"/>
 
-
-
-
-    <!--<div th:text="${1+2}"></div>-->
-    <!--<div th:text="${@minesweeperController.getCurrTime()}"></div>-->
-    <!--<div th:text="${@minesweeperController.currTime}"></div>-->
-
-    <!--Objekt TopScores smeruje do fragmentu:-->
-    <div th:replace="fragments/fragments :: scores(${TopScores})" />
-
-    <!--Objekt AllComments smeruje do fragmentu:-->
-    <div th:replace="fragments/fragments :: comments(${AllComments})" />
+    <!--Objekt AllComments z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: comments(${AllComments})"/>
 
 </main>
 

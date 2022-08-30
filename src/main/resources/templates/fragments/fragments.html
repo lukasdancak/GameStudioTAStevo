@@ -112,5 +112,12 @@
 </div>
 
 
+<div th:fragment="avgrating(AverageRating)">
+    <br>
+    <h3>Average Rating:</h3>
+    <span style="color:red;">AVG Rating z fragmentu</span>
+    <span th:text="'Priemerny rating hry je: ' + ${AverageRating}"></span>
+</div>
+
 </body>
 </html>
