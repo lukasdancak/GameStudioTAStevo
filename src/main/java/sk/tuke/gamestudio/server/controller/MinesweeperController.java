@@ -34,11 +34,12 @@ public class MinesweeperController {
     CommentService commentService;
     @Autowired
     RatingService ratingService;
-
+    @Autowired
+    GamestudioController gamestudioController;
     @Autowired
     private UserController userController;
 
-    private Field field = new Field(9,9,10);
+    private Field field = new Field(9, 9, 10);
 
     private boolean marking = false;
 
@@ -47,34 +48,33 @@ public class MinesweeperController {
     private boolean isPlaying = true;
 
 
-
     @RequestMapping("/asynch")
-    public String loadInAsynchMode(){
-        startOrUpdateGame(null,null);
+    public String loadInAsynchMode() {
+        startOrUpdateGame(null, null);
         return "minesweeperAsynch";
     }
 
-    @RequestMapping(value="/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/json", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Field processUserInputJson(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column){
-        boolean justFinished = startOrUpdateGame(row,column);
+    public Field processUserInputJson(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column) {
+        boolean justFinished = startOrUpdateGame(row, column);
         this.field.setJustFinished(justFinished);
         this.field.setMarking(marking);
         return this.field;
     }
 
-    @RequestMapping(value="/jsonmark", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/jsonmark", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public  Field changeMarkingJson(){
+    public Field changeMarkingJson() {
         switchMode();
         this.field.setJustFinished(false);
         this.field.setMarking(marking);
         return this.field;
     }
 
-    @RequestMapping(value="/jsonnew", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/jsonnew", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public  Field newGameJson(){
+    public Field newGameJson() {
         startNewGame();
         this.field.setJustFinished(false);
         this.field.setMarking(marking);
@@ -83,14 +83,14 @@ public class MinesweeperController {
 
     //metody od steva
 
-    private void startNewGame(){
-        this.field = new Field(9,9,3);
+    private void startNewGame() {
+        this.field = new Field(9, 9, 3);
         this.isPlaying = true;
         this.marking = false;
     }
 
-    private void switchMode(){
-        if(this.field.getState()==GameState.PLAYING){
+    private void switchMode() {
+        if (this.field.getState() == GameState.PLAYING) {
             this.marking = !this.marking;
         }
     }
@@ -99,31 +99,32 @@ public class MinesweeperController {
      * Updates the game field and other variables according to the move of the user
      * Also adds the score to the score table if the game just ended.
      * If the game did not start yet, starts the game.
-     * @param row row of the tile on which the user clicked
+     *
+     * @param row    row of the tile on which the user clicked
      * @param column column of the tile on which the user clicked
      */
-    private boolean startOrUpdateGame(Integer row, Integer column){
-        boolean justFinished=false;
-        if(field==null){
+    private boolean startOrUpdateGame(Integer row, Integer column) {
+        boolean justFinished = false;
+        if (field == null) {
             startNewGame();
         }
 
-        if(row != null && column != null){
+        if (row != null && column != null) {
 
-            if(this.marking){
-                this.field.markTile(row,column);
-            }else{
-                this.field.openTile(row,column);
+            if (this.marking) {
+                this.field.markTile(row, column);
+            } else {
+                this.field.openTile(row, column);
             }
 
 
-            if(this.field.getState()!= GameState.PLAYING && this.isPlaying==true){ //I just won/lose
-                this.isPlaying=false;
+            if (this.field.getState() != GameState.PLAYING && this.isPlaying == true) { //I just won/lose
+                this.isPlaying = false;
 
-                justFinished=true;
+                justFinished = true;
 
 
-                if(userController.isLogged() && this.field.getState()== GameState.SOLVED){
+                if (userController.isLogged() && this.field.getState() == GameState.SOLVED) {
                     Score newScore = new Score("minesweeper", userController.getLoggedUser(), this.field.getScore(), new Date());
                     scoreService.addScore(newScore);
 
@@ -134,16 +135,16 @@ public class MinesweeperController {
     }
 
     @RequestMapping("/sendcomment")
-    public String createComment(String comment){
-        commentService.addComment( new Comment("minesweeper", userController.getLoggedUser(), comment, new Date()) );
+    public String createComment(String comment) {
+        commentService.addComment(new Comment("minesweeper", userController.getLoggedUser(), comment, new Date()));
 
 
         return "redirect:/minesweeper";
     }
 
     @RequestMapping("/sendrating")
-    public String createOrUpdateRating(int rating){
-        if(rating>0 && rating <6) {
+    public String createOrUpdateRating(int rating) {
+        if (rating > 0 && rating < 6) {
             ratingService.setRating(new Rating("minesweeper", userController.getLoggedUser(), rating, new Date()));
         }
 
@@ -152,25 +153,25 @@ public class MinesweeperController {
 
 
     @RequestMapping
-    public String minesweeper(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model){
+    public String minesweeper(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model) {
 
-        if(userController.getLoggedUser()==null){
+        if (userController.getLoggedUser() == null) {
             return "redirect:/";
         }
 
-        if(row != null && column != null){
+        if (row != null && column != null) {
 
-            if(marking){
-                field.markTile(row,column);
-            }else{
-                field.openTile(row,column);
+            if (marking) {
+                field.markTile(row, column);
+            } else {
+                field.openTile(row, column);
             }
         }
 
-        if (field.getState() != GameState.PLAYING && field.getScore()!=0){
+        if (field.getState() != GameState.PLAYING && field.getScore() != 0) {
 
-            if(userController.isLogged()) {
-                scoreService.addScore( new Score("minesweeper", userController.getLoggedUser(), field.getScore(), new Date()));
+            if (userController.isLogged()) {
+                scoreService.addScore(new Score("minesweeper", userController.getLoggedUser(), field.getScore(), new Date()));
 
             }
 
@@ -181,24 +182,24 @@ public class MinesweeperController {
     }
 
     @RequestMapping("/mark")
-    public  String changeMarking(Model model){
+    public String changeMarking(Model model) {
         marking = !marking;
         prepareModel(model);
         return "minesweeper";
     }
 
     @RequestMapping("/new")
-    public  String newGame(Model model){
-        field = new Field(9,9,10);
+    public String newGame(Model model) {
+        field = new Field(9, 9, 10);
         prepareModel(model);
         return "minesweeper";
     }
 
-    public String getCurrTime(){
+    public String getCurrTime() {
         return new Date().toString();
     }
 
-    public boolean getMarking(){
+    public boolean getMarking() {
         return marking;
     }
     /*
@@ -220,7 +221,7 @@ public class MinesweeperController {
         sb.append("</table>\n");
 */
 
-    public String getFieldAsHtml(){
+    public String getFieldAsHtml() {
 
         int rowCount = field.getRowCount();
         int colCount = field.getColumnCount();
@@ -229,21 +230,19 @@ public class MinesweeperController {
 
         sb.append("<table class='minefield'>\n");
 
-        for (int row = 0; row<rowCount;row++){
+        for (int row = 0; row < rowCount; row++) {
             sb.append("<tr>\n");
 
-            for (int col = 0; col<colCount;col++){
-                Tile tile = field.getTile(row,col);
+            for (int col = 0; col < colCount; col++) {
+                Tile tile = field.getTile(row, col);
 
                 sb.append("<td class='" + getTileClass(tile) + "'> ");
-                sb.append("<a href='/minesweeper/?row="+row+"&column="+col+"'> ");
+                sb.append("<a href='/minesweeper/?row=" + row + "&column=" + col + "'> ");
                 sb.append("<span>" + getTileText(tile) + "</span>");
                 sb.append(" </a>\n");
                 sb.append(" </td>\n");
 
             }
-
-
 
 
             sb.append("</tr>\n");
@@ -255,8 +254,8 @@ public class MinesweeperController {
         return sb.toString();
     }
 
-    public String getTileText(Tile tile){
-        switch (tile.getState()){
+    public String getTileText(Tile tile) {
+        switch (tile.getState()) {
             case CLOSED:
                 return "-";
             case MARKED:
@@ -288,38 +287,35 @@ public class MinesweeperController {
         }
     }
 
-    private void prepareModel(Model model){
+    private void prepareModel(Model model) {
 
         model.addAttribute("minesweeperField", field.getTiles());
 
-        boolean shouldContinue=true;
-        if(field.getState()==GameState.FAILED ||field.getState()==GameState.SOLVED){
-            shouldContinue=false;
+        boolean shouldContinue = true;
+        if (field.getState() == GameState.FAILED || field.getState() == GameState.SOLVED) {
+            shouldContinue = false;
 
         }
         int win1vslose2 = 0;
-        if(field.getState() == GameState.SOLVED){win1vslose2=1;}
-        if(field.getState() == GameState.FAILED){win1vslose2=2;}
-        String averageRating="V databaze nie su ziadne zaznamy ratingov";
-        averageRating = Integer.toString(ratingService.getAverageRating("minesweeper"));
-        List<Comment> allComments = null;
-        try {
-            allComments=commentService.getComments("minesweeper");
-        } catch (Exception e) {
-            //e.printStackTrace();
+        if (field.getState() == GameState.SOLVED) {
+            win1vslose2 = 1;
         }
+        if (field.getState() == GameState.FAILED) {
+            win1vslose2 = 2;
+        }
+
+
         model.addAttribute("minesweeperWinLose", win1vslose2);
         model.addAttribute("minesweeperShouldContinue", shouldContinue);
-        model.addAttribute("TopScores", scoreService.getBestScores("minesweeper"));
-        model.addAttribute("AllComments", allComments);
-        model.addAttribute("AverageRating", averageRating);
         model.addAttribute("minesweeperPlayerScore", String.valueOf(field.getScore()));
-
-
+        model.addAttribute("TopScores", gamestudioController.getTopScoresOfGame("minesweeper"));
+        model.addAttribute("AllComments", gamestudioController
+                .getAllCommentsOfGame("minesweeper"));
+        model.addAttribute("AverageRating", gamestudioController
+                .getAverageRatingOfGame("minesweeper"));
 
 
     }
-
 
 
 }

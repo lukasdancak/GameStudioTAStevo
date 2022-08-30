@@ -111,12 +111,23 @@
     </table>
 </div>
 
-
+<!--fragment average rating-->
 <div th:fragment="avgrating(AverageRating)">
     <br>
     <h3>Average Rating:</h3>
     <span style="color:red;">AVG Rating z fragmentu</span>
-    <span th:text="'Priemerny rating hry je: ' + ${AverageRating}"></span>
+
+    <th:block th:if="${AverageRating<0}">
+        <span>Problem s databazou</span>
+    </th:block>
+
+    <th:block th:if="${AverageRating==0}">
+        <span>V databaze nie us ziadne zaznamy</span>
+    </th:block>
+
+    <th:block th:if="${AverageRating>0}">
+        <span th:text="'Priemerny rating hry je: ' + ${AverageRating}"></span>
+    </th:block>
 </div>
 
 </body>
