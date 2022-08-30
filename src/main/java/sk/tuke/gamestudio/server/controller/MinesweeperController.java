@@ -2,10 +2,12 @@ package sk.tuke.gamestudio.server.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Comment;
 import sk.tuke.gamestudio.entity.Rating;
@@ -40,6 +42,95 @@ public class MinesweeperController {
     private boolean marking = false;
 
     private GameState gameState = GameState.PLAYING;
+
+    private boolean isPlaying = true;
+
+
+
+    @RequestMapping("/asynch")
+    public String loadInAsynchMode(){
+        startOrUpdateGame(null,null);
+        return "minesweeperAsynch";
+    }
+
+    @RequestMapping(value="/json", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Field processUserInputJson(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column){
+        boolean justFinished = startOrUpdateGame(row,column);
+        this.field.setJustFinished(justFinished);
+        this.field.setMarking(marking);
+        return this.field;
+    }
+
+    @RequestMapping(value="/jsonmark", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public  Field changeMarkingJson(){
+        switchMode();
+        this.field.setJustFinished(false);
+        this.field.setMarking(marking);
+        return this.field;
+    }
+
+    @RequestMapping(value="/jsonnew", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public  Field newGameJson(){
+        startNewGame();
+        this.field.setJustFinished(false);
+        this.field.setMarking(marking);
+        return this.field;
+    }
+
+    //metody od steva
+
+    private void startNewGame(){
+        this.field = new Field(9,9,3);
+        this.isPlaying = true;
+        this.marking = false;
+    }
+
+    private void switchMode(){
+        if(this.field.getState()==GameState.PLAYING){
+            this.marking = !this.marking;
+        }
+    }
+
+    /**
+     * Updates the game field and other variables according to the move of the user
+     * Also adds the score to the score table if the game just ended.
+     * If the game did not start yet, starts the game.
+     * @param row row of the tile on which the user clicked
+     * @param column column of the tile on which the user clicked
+     */
+    private boolean startOrUpdateGame(Integer row, Integer column){
+        boolean justFinished=false;
+        if(field==null){
+            startNewGame();
+        }
+
+        if(row != null && column != null){
+
+            if(this.marking){
+                this.field.markTile(row,column);
+            }else{
+                this.field.openTile(row,column);
+            }
+
+
+            if(this.field.getState()!= GameState.PLAYING && this.isPlaying==true){ //I just won/lose
+                this.isPlaying=false;
+
+                justFinished=true;
+
+
+                if(userController.isLogged() && this.field.getState()== GameState.SOLVED){
+                    Score newScore = new Score("minesweeper", userController.getLoggedUser(), this.field.getScore(), new Date());
+                    scoreService.addScore(newScore);
+
+                }
+            }
+        }
+        return justFinished;
+    }
 
     @RequestMapping("/sendcomment")
     public String createComment(String comment){
@@ -215,10 +306,9 @@ public class MinesweeperController {
         model.addAttribute("minesweeperTopScores", scoreService.getBestScores("minesweeper"));
         model.addAttribute("minesweeperAllComments", commentService.getComments("minesweeper"));
         model.addAttribute("minesweeperAverageRating", averageRating);
-
-
-
         model.addAttribute("minesweeperPlayerScore", String.valueOf(field.getScore()));
+
+
 
 
     }
