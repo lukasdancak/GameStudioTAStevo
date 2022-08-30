@@ -17,8 +17,16 @@
 
 <main layout:fragment="content"></main>
 
-<div th:replace="fragments/fragments :: comments(${AllComments})" />
-<!--<div th:replace="fragments/fragments :: scores" />-->
+<!--blok sa nezobrazi ak dodam o template-u cze model hodnotu true, inak sa zobrazi stale
+pouzijem to pre template gamestudio.html, kde nechcem zobrazit komentare a score-->
+<th:block th:if="${!#bools.isTrue(hideCommentsScores)}">
+    <!--univerzalny parametricky fragment pre top scores-->
+    <div th:replace="fragments/fragments :: scores(${TopScores})" />
+
+    <!--univerzalny parametricky fragment pre komenty-->
+    <div th:replace="fragments/fragments :: comments(${AllComments})" />
+</th:block>
+
 
 <footer th:replace="fragments/fragments :: footer" />
 </body>
