@@ -118,12 +118,14 @@
     <!--<div th:text="${@minesweeperController.getCurrTime()}"></div>-->
     <!--<div th:text="${@minesweeperController.currTime}"></div>-->
 
-</main>
-<!--Objekt TopScores smeruje do fragmentu:-->
-<!--<div th:replace="fragments/fragments :: scores(${TopScores})" />-->
+    <!--Objekt TopScores smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: scores(${TopScores})" />
 
-<!--Objekt AllComments smeruje do fragmentu:-->
-<!--<div th:replace="fragments/fragments :: comments(${AllComments})" />-->
+    <!--Objekt AllComments smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: comments(${AllComments})" />
+
+</main>
+
 
 </body>
 </html>
