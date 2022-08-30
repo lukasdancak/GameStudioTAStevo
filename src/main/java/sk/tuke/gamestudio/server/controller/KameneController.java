@@ -33,44 +33,45 @@ public class KameneController {
     CommentService commentService;
     @Autowired
     RatingService ratingService;
-
+    @Autowired
+    GamestudioController gamestudioController;
     @Autowired
     private UserController userController;
 
-    Field field = new Field(3,3);
+    Field field = new Field(3, 3);
 
 
     @RequestMapping("/tileup")
-    public String moveTileUp(){
+    public String moveTileUp() {
         field.moveUp();
 
-        return"redirect:/kamene";
+        return "redirect:/kamene";
     }
 
     @RequestMapping("/tiledown")
-    public String moveTileDown(){
+    public String moveTileDown() {
         field.moveDown();
 
-        return"redirect:/kamene";
+        return "redirect:/kamene";
     }
 
     @RequestMapping("/tileleft")
-    public String moveTileLeft(){
+    public String moveTileLeft() {
         field.moveLeft();
 
-        return"redirect:/kamene";
+        return "redirect:/kamene";
     }
 
     @RequestMapping("/tileright")
-    public String moveTileRight(){
+    public String moveTileRight() {
         field.moveRight();
 
-        return"redirect:/kamene";
+        return "redirect:/kamene";
     }
 
     @RequestMapping
-    public String kamene(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model){
-        if(userController.getLoggedUser()==null){
+    public String kamene(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model) {
+        if (userController.getLoggedUser() == null) {
             return "redirect:/";
         }
 
@@ -80,18 +81,19 @@ public class KameneController {
     }
 
 
-//skontrolovat
+    //skontrolovat
     @RequestMapping("/sendcomment")
-    public String createComment(String comment){
-        commentService.addComment( new Comment("kamene", userController.getLoggedUser(), comment, new Date()) );
+    public String createComment(String comment) {
+        commentService.addComment(new Comment("kamene", userController.getLoggedUser(), comment, new Date()));
 
 
         return "redirect:/minesweeper";
     }
-//skontorlovat
+
+    //skontorlovat
     @RequestMapping("/sendrating")
-    public String createOrUpdateRating(int rating){
-        if(rating>0 && rating <6) {
+    public String createOrUpdateRating(int rating) {
+        if (rating > 0 && rating < 6) {
             ratingService.setRating(new Rating("kamene", userController.getLoggedUser(), rating, new Date()));
         }
 
@@ -99,49 +101,20 @@ public class KameneController {
     }
 
     public String getTileNum(Tile tile) {
-        if(tile.getValue()==0){return "";} else{
-            return Integer.toString( tile.getValue() );
+        if (tile.getValue() == 0) {
+            return "";
+        } else {
+            return Integer.toString(tile.getValue());
         }
-
     }
 
-
-    private void prepareModel(Model model){
-        // ak nastane problem s databazou ostane NULL, ak nenajde ziadny koment bude EMPTY LIST
-        List<Comment> allComments = null; // ak nastane problem s databazou ostane null
-        try {
-            allComments=commentService.getComments("minesweeper");
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
-
-        model.addAttribute("AllComments", allComments);
+    private void prepareModel(Model model) {
         model.addAttribute("kameneField", field.getTiles());
-
-
-
-
+        model.addAttribute("TopScores", gamestudioController.getTopScoresOfGame("minesweeper"));
+        model.addAttribute("AllComments", gamestudioController
+                .getAllCommentsOfGame("minesweeper"));
+        model.addAttribute("AverageRating", gamestudioController
+                .getAverageRatingOfGame("minesweeper"));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
