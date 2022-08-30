@@ -16,12 +16,12 @@ public class UserController {
         if("heslo".equals(password)){
             this.loggedUser=login.trim();
             if(this.loggedUser.length()>0){
-                return "redirect:/gamestudio";
+                return "redirect:/";
             }
 
         }
         this.loggedUser=null; // neprijal som uzivatela -->> explicitne nastavenie uzivatela na null
-        return "redirect:/gamestudio";
+        return "redirect:/";
     }
 
 
@@ -29,7 +29,7 @@ public class UserController {
     public String logout(){
 
         this.loggedUser=null;
-        return "redirect:/gamestudio";
+        return "redirect:/";
     }
 
     public String getLoggedUser() {

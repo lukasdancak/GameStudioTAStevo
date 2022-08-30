@@ -20,6 +20,7 @@ import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/kamene")
@@ -70,7 +71,7 @@ public class KameneController {
     @RequestMapping
     public String kamene(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model){
         if(userController.getLoggedUser()==null){
-            return "redirect:/gamestudio";
+            return "redirect:/";
         }
 
 
@@ -106,7 +107,15 @@ public class KameneController {
 
 
     private void prepareModel(Model model){
+        // ak nastane problem s databazou ostane NULL, ak nenajde ziadny koment bude EMPTY LIST
+        List<Comment> allComments = null; // ak nastane problem s databazou ostane null
+        try {
+            allComments=commentService.getComments("minesweeper");
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
 
+        model.addAttribute("AllComments", allComments);
         model.addAttribute("kameneField", field.getTiles());
 
 

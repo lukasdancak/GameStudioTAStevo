@@ -108,7 +108,7 @@
 
 <br>
 <h3>Average Rating:</h3>
-<span th:text="'Priemerny rating hry je: ' + ${minesweeperAverageRating}"></span>
+<span th:text="'Priemerny rating hry je: ' + ${AverageRating}"></span>
 
 
 
@@ -123,10 +123,10 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:if="${minesweeperTopScores.empty}">
+    <tr th:if="${TopScores.empty}">
         <td colspan="2"> No Scores Available </td>
     </tr>
-    <tr th:each="item : ${minesweeperTopScores}">
+    <tr th:each="item : ${TopScores}">
         <td><span th:text="${item.username}">  </span></td>
         <td><span th:text="${item.points}"> </span></td>
         <td><span th:text="${item.playedOn}">  </span></td>
@@ -134,41 +134,14 @@
     </tbody>
 </table>
 
-    <br>
-    <h3>Comments:</h3>
-    <table class="scores">
-        <thead>
-        <tr>
-            <th> Username </th>
-            <th> Comment </th>
-            <th> Commented On</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:if="${minesweeperTopScores.empty}">
-            <td colspan="2"> No Comments Available </td>
-        </tr>
-        <tr th:each="item : ${minesweeperAllComments}">
-            <td><span th:text="${item.username}"> </span></td>
-            <td><span th:text="${item.comment}">  </span></td>
-            <td><span th:text="${item.commentedOn}"> </span></td>
-        </tr>
-        </tbody>
-    </table>
-
-
-
-
-
-
-
-
-
     <!--<div th:text="${1+2}"></div>-->
     <!--<div th:text="${@minesweeperController.getCurrTime()}"></div>-->
     <!--<div th:text="${@minesweeperController.currTime}"></div>-->
 
-<!--<footer th:replace="fragments/fragments :: footer" />-->
 </main>
+
+<!--univerzalny parametricky fragment pre komenty-->
+<div th:replace="fragments/fragments :: comments(${AllComments})" />
+
 </body>
 </html>

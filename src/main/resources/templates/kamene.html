@@ -106,5 +106,9 @@
 
 <!--<footer th:replace="fragments/fragments :: footer" />-->
 </main>
+
+<!--univerzalny parametricky fragment pre komenty-->
+<div th:replace="fragments/fragments :: comments(${AllComments})" />
+
 </body>
 </html>

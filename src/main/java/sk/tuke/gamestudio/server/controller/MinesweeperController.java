@@ -21,6 +21,7 @@ import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/minesweeper")
@@ -154,7 +155,7 @@ public class MinesweeperController {
     public String minesweeper(@RequestParam(required = false) Integer row, @RequestParam(required = false) Integer column, Model model){
 
         if(userController.getLoggedUser()==null){
-            return "redirect:/gamestudio";
+            return "redirect:/";
         }
 
         if(row != null && column != null){
@@ -301,11 +302,17 @@ public class MinesweeperController {
         if(field.getState() == GameState.FAILED){win1vslose2=2;}
         String averageRating="V databaze nie su ziadne zaznamy ratingov";
         averageRating = Integer.toString(ratingService.getAverageRating("minesweeper"));
+        List<Comment> allComments = null;
+        try {
+            allComments=commentService.getComments("minesweeper");
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
         model.addAttribute("minesweeperWinLose", win1vslose2);
         model.addAttribute("minesweeperShouldContinue", shouldContinue);
-        model.addAttribute("minesweeperTopScores", scoreService.getBestScores("minesweeper"));
-        model.addAttribute("minesweeperAllComments", commentService.getComments("minesweeper"));
-        model.addAttribute("minesweeperAverageRating", averageRating);
+        model.addAttribute("TopScores", scoreService.getBestScores("minesweeper"));
+        model.addAttribute("AllComments", allComments);
+        model.addAttribute("AverageRating", averageRating);
         model.addAttribute("minesweeperPlayerScore", String.valueOf(field.getScore()));
 
 

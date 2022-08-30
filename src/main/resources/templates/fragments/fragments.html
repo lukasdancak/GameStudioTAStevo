@@ -7,6 +7,8 @@
 </head>
 <body>
 
+
+<!--fragment header -->
 <header th:fragment="header">
 
     <div class="banner"><span class="bannertext">Game Studio</span></div>
@@ -24,15 +26,16 @@
     </div>
 </header>
 
+<!--fragment navigacia-->
 <nav th:fragment="nav">
     <div id="menu">
 
         <ul>
 <!--            <a>Menu: </a>-->
-            <li><a href="/gamestudio">Homepage</a></li>
+            <li><a href="/">Homepage</a></li>
             <li><a href="/minesweeper">Minesweeper</a></li>
             <li><a href="/kamene">Kamene</a></li>
-            <li><a href="/gamestudio">Games</a></li>
+            <li><a href="/games">Games</a></li>
             <li><a href="#">Player's Profile</a></li>
             <li><a href="#">About me</a></li>
             <li><a href="#">Contact me</a></li>
@@ -42,12 +45,43 @@
 
 
 
-
+<!--fragment footer-->
 <footer th:fragment="footer">
     <hr>
     <p>Footer: bla bal blab lab lab alab alabl abal</p>
     <hr>
 </footer>
+
+<!--fragment comment-->
+
+<div th:fragment="comments(AllComments)">
+
+    <br>
+    <h3>Comments:</h3>
+    <span style="color:red;">Komenty z fragmentu</span>
+    <table class="scores">
+        <thead>
+        <tr>
+            <th> Username </th>
+            <th> Comment </th>
+            <th> Commented On</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:if="${AllComments==null}">
+            <td colspan="2"> Problem s databazou </td>
+        </tr>
+        <tr th:if="${AllComments!=null and AllComments.empty}">
+            <td colspan="2"> No Comments Available </td>
+        </tr>
+        <tr th:each="item : ${AllComments}">
+            <td><span th:text="${item.username}"> </span></td>
+            <td><span th:text="${item.comment}">  </span></td>
+            <td><span th:text="${item.commentedOn}"> </span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 
 
 </body>

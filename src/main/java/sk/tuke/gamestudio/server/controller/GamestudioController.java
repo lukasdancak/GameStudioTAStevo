@@ -5,8 +5,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class GamestudioController {
-    @RequestMapping("/gamestudio")
+
+
+    @RequestMapping("/")
     public String mainPage(){
+        return "gamestudio";
+    }
+
+    @RequestMapping("/games")
+    public String gamesPage(){
         return "gamestudio";
     }
 
