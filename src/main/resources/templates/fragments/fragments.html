@@ -31,7 +31,7 @@
     <div id="menu">
 
         <ul>
-<!--            <a>Menu: </a>-->
+            <!--            <a>Menu: </a>-->
             <li><a href="/">Homepage</a></li>
             <li><a href="/minesweeper">Minesweeper</a></li>
             <li><a href="/kamene">Kamene</a></li>
@@ -42,7 +42,6 @@
         </ul>
     </div>
 </nav>
-
 
 
 <!--fragment footer-->
@@ -60,17 +59,17 @@
     <table class="scores">
         <thead>
         <tr>
-            <th> Username </th>
-            <th> Comment </th>
+            <th> Username</th>
+            <th> Comment</th>
             <th> Commented On</th>
         </tr>
         </thead>
         <tbody>
         <tr th:if="${AllComments==null}">
-            <td colspan="2"> Problem s databazou </td>
+            <td colspan="2"> Problem s databazou</td>
         </tr>
         <tr th:if="${AllComments!=null and AllComments.empty}">
-            <td colspan="2"> No Comments Available </td>
+            <td colspan="2"> No Comments Available</td>
         </tr>
         <tr th:each="item : ${AllComments}">
             <td><span th:text="${item.username}"> </span></td>
@@ -90,17 +89,17 @@
     <table class="scores">
         <thead>
         <tr>
-            <th> Username </th>
-            <th> Score </th>
+            <th> Username</th>
+            <th> Score</th>
             <th> Played On</th>
         </tr>
         </thead>
         <tbody>
         <tr th:if="${TopScores==null}">
-            <td colspan="2"> Problem s databazou </td>
+            <td colspan="2"> Problem s databazou</td>
         </tr>
         <tr th:if="${TopScores!=null and TopScores.empty}">
-            <td colspan="2"> No Scores Available </td>
+            <td colspan="2"> No Scores Available</td>
         </tr>
         <tr th:each="item : ${TopScores}">
             <td><span th:text="${item.username}">  </span></td>
@@ -122,12 +121,35 @@
     </th:block>
 
     <th:block th:if="${AverageRating==0}">
-        <span>V databaze nie us ziadne zaznamy</span>
+        <span>V databaze nie su ziadne zaznamy</span>
     </th:block>
 
     <th:block th:if="${AverageRating>0}">
         <span th:text="'Priemerny rating hry je: ' + ${AverageRating}"></span>
     </th:block>
+</div>
+
+<!--fragment na odoslanie komentu-->
+<div th:fragment="postcomment(GameName)">
+    <br>
+    <h3>Mozes zadat svoj komentar:</h3>
+    <form action='/sendcomment' method="post">
+        <input type="hidden" th:value="${GameName}" th:attr="name='gameName'"/>
+        <label for="yourcomment">Your Comment:</label>
+        <textarea id="yourcomment" maxlength="1000" name="comment"></textarea> <br/>
+        <button type="submit">Odoslat</button>
+    </form>
+</div>
+
+<div th:fragment="postrating(GameName)">
+    <br>
+    <h3>Mozes zadat svoj rating hry:</h3>
+    <form action="/sendrating" method="post">
+        <input type="hidden" th:value="${GameName}" th:attr="name='gameName'"/>
+        <label for="yourrating">Your Rating: </label>
+        <input id="yourrating" type="number" name="rating" min="1" max="5"/> <br/>
+        <button type="submit">Odoslat</button>
+    </form>
 </div>
 
 </body>

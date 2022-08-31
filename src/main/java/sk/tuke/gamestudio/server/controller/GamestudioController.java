@@ -7,11 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Comment;
+import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 import sk.tuke.gamestudio.service.CommentService;
 import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -24,25 +26,27 @@ public class GamestudioController {
     CommentService commentService;
     @Autowired
     RatingService ratingService;
+    @Autowired
+    UserController userController;
 
 
     @RequestMapping("/")
-    public String mainPage(Model model){
+    public String mainPage(Model model) {
         // skryje fragmenty pre komntare a score - nechcem ich na homepage
         model.addAttribute("hideCommentsScores", true);
         return "gamestudio";
     }
 
     @RequestMapping("/games")
-    public String gamesPage(){
+    public String gamesPage() {
         return "redirect:/gamestudio";
     }
 
     //ak nastane problem s databazou vrati NULL, a to mam osetrene vypisom vo fragmente SCORES
-    public List<Score> getTopScoresOfGame(String gameName){
-        List<Score> topScores=null;
+    public List<Score> getTopScoresOfGame(String gameName) {
+        List<Score> topScores = null;
         try {
-            topScores=scoreService.getBestScores(gameName);
+            topScores = scoreService.getBestScores(gameName);
         } catch (Exception e) {
             //e.printStackTrace();
         }
@@ -70,6 +74,28 @@ public class GamestudioController {
         }
         return averageRating;
 
+    }
+
+    @RequestMapping("/sendcomment")
+    public String createComment(String comment, String gameName) {
+        //odsekne koniec stringu ak ma viac ako 1000 znakov
+        if (comment.length() > 1000) {
+            comment = comment.substring(0, 1000);
+        }
+        commentService
+                .addComment(new Comment(gameName, userController.getLoggedUser(), comment, new Date()));
+
+
+        return "redirect:/" + gameName;
+    }
+
+    @RequestMapping("/sendrating")
+    public String createOrUpdateRating(int rating, String gameName) {
+        if (rating > 0 && rating < 6) {
+            ratingService.setRating(new Rating(gameName, userController.getLoggedUser(), rating, new Date()));
+        }
+
+        return "redirect:/" + gameName;
     }
 
 

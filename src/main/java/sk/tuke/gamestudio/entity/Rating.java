@@ -8,16 +8,16 @@ import java.util.Date;
 
 @Entity
 @Table(uniqueConstraints =
-        {@UniqueConstraint(name = "UniqueGameAndUsername", columnNames = { "game", "username" })})
+        {@UniqueConstraint(name = "UniqueGameAndUsername", columnNames = {"game", "username"})})
 public class Rating implements Serializable {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue //(strategy = GenerationType.IDENTITY)
     private long ident;
 
-    @Column(nullable = false, length=64)
+    @Column(nullable = false, length = 64)
     private String game;
 
-    @Column(nullable = false, length=162) // 162 = username 32 + fullname 128, + 2x zatvorka
+    @Column(nullable = false, length = 162) // 162 = username 32 + fullname 128, + 2x zatvorka
     private String username;
 
     @Column(columnDefinition = "INT CHECK(rating BETWEEN 1 AND 5) NOT NULL")
@@ -26,7 +26,8 @@ public class Rating implements Serializable {
     @Column(nullable = false)
     private Date ratedOn;
 
-    public Rating() {}
+    public Rating() {
+    }
 
     public Rating(String game, String username, int rating, Date ratedOn) {
         this.game = game;
@@ -34,7 +35,6 @@ public class Rating implements Serializable {
         this.rating = rating;
         this.ratedOn = ratedOn;
     }
-
 
 
     @Override

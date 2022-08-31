@@ -63,10 +63,6 @@
     </div>
     <br>
 
-
-    <!--<div th:utext="${@minesweeperController.fieldAsHtml}"></div>-->
-
-
     <div>
         <table class='minefield'>
             <tr th:each="row: ${minesweeperField}">
@@ -86,21 +82,12 @@
         </table>
     </div>
 
-    <h3>Mozes zadat svoj komentar:</h3>
-    <form action="/minesweeper/sendcomment" method="post">
-        <label for="yourcomment">Your Comment:</label> <textarea id="yourcomment" maxlength="1000"
-                                                                 name="comment"></textarea> <br/>
-        <!--        <label for="yourrating">Your Rating: </label> <input id="yourrating" type="number" name="rating"/> <br/>-->
-        <button type="submit">Odoslat</button>
-    </form>
 
-    <br>
-    <h3>Mozes zadat svoj rating hry:</h3>
-    <form action="/minesweeper/sendrating" method="post">
-        <label for="yourrating">Your Rating: </label> <input id="yourrating" type="number" name="rating" min="1"
-                                                             max="5"/> <br/>
-        <button type="submit">Odoslat</button>
-    </form>
+    <!--String GameName z modelu smeruje do fragmentu postrating-->
+    <div th:replace="fragments/fragments :: postrating(${GameName})"/>
+
+    <!--String GameName z modelu smeruje do fragmentu postcomment-->
+    <div th:replace="fragments/fragments :: postcomment(${GameName})"/>
 
     <!--int AverageRating z modelu smeruje do fragmentu:-->
     <div th:replace="fragments/fragments :: avgrating(${AverageRating})"/>

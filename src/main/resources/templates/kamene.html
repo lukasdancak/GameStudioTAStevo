@@ -39,61 +39,19 @@
         </ul>
     </div>
 
+    <!--String GameName z modelu smeruje do fragmentu postrating-->
+    <div th:replace="fragments/fragments :: postrating(${GameName})"/>
 
-    <!--<br>-->
-    <!--<h3>Average Rating:</h3>-->
-    <!--<span th:text="'Priemerny rating hry je: ' + ${minesweeperAverageRating}"></span>-->
+    <!--String GameName z modelu smeruje do fragmentu postcomment-->
+    <div th:replace="fragments/fragments :: postcomment(${GameName})"/>
 
+    <!--int AverageRating z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: avgrating(${AverageRating})"/>
 
-    <!--<br>-->
-    <!--    <h3>Scores:</h3>-->
-    <!--<table class="scores">-->
-    <!--    <thead>-->
-    <!--    <tr>-->
-    <!--        <th> Username </th>-->
-    <!--        <th> Score </th>-->
-    <!--        <th> Played On</th>-->
-    <!--    </tr>-->
-    <!--    </thead>-->
-    <!--    <tbody>-->
-    <!--    <tr th:if="${minesweeperTopScores.empty}">-->
-    <!--        <td colspan="2"> No Scores Available </td>-->
-    <!--    </tr>-->
-    <!--    <tr th:each="item : ${minesweeperTopScores}">-->
-    <!--        <td><span th:text="${item.username}">  </span></td>-->
-    <!--        <td><span th:text="${item.points}"> </span></td>-->
-    <!--        <td><span th:text="${item.playedOn}">  </span></td>-->
-    <!--    </tr>-->
-    <!--    </tbody>-->
-    <!--</table>-->
-
-    <!--    <br>-->
-    <!--    <h3>Comments:</h3>-->
-    <!--    <table class="scores">-->
-    <!--        <thead>-->
-    <!--        <tr>-->
-    <!--            <th> Username </th>-->
-    <!--            <th> Comment </th>-->
-    <!--            <th> Commented On</th>-->
-    <!--        </tr>-->
-    <!--        </thead>-->
-    <!--        <tbody>-->
-    <!--        <tr th:if="${minesweeperTopScores.empty}">-->
-    <!--            <td colspan="2"> No Comments Available </td>-->
-    <!--        </tr>-->
-    <!--        <tr th:each="item : ${minesweeperAllComments}">-->
-    <!--            <td><span th:text="${item.username}"> </span></td>-->
-    <!--            <td><span th:text="${item.comment}">  </span></td>-->
-    <!--            <td><span th:text="${item.commentedOn}"> </span></td>-->
-    <!--        </tr>-->
-    <!--        </tbody>-->
-    <!--    </table>-->
-
-
-    <!--Objekt TopScores smeruje do fragmentu:-->
+    <!--Objekt TopScores z modelu smeruje do fragmentu:-->
     <div th:replace="fragments/fragments :: scores(${TopScores})"/>
 
-    <!--Objekt AllComments smeruje do fragmentu:-->
+    <!--Objekt AllComments z modelu smeruje do fragmentu:-->
     <div th:replace="fragments/fragments :: comments(${AllComments})"/>
 </main>
 

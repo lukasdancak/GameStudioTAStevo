@@ -304,7 +304,7 @@ public class MinesweeperController {
             win1vslose2 = 2;
         }
 
-
+        model.addAttribute("GameName", "minesweeper");
         model.addAttribute("minesweeperWinLose", win1vslose2);
         model.addAttribute("minesweeperShouldContinue", shouldContinue);
         model.addAttribute("minesweeperPlayerScore", String.valueOf(field.getScore()));
