@@ -4,18 +4,16 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(uniqueConstraints =
-        {@UniqueConstraint(name = "UniqueUserNameAndFullName", columnNames = { "userName", "fullName" })})
 public class Player implements Serializable {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY) // riesenie ID nechavam na databazu, aby som mohol pripadne
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // riesenie ID nechavam na databazu, aby som mohol pripadne
     private long ident;                                  // pouzit aj JDBC service
 
 
-    @Column(nullable = false, length=32)
+    @Column(nullable = false, length = 32, unique = true)
     private String username;
 
-    @Column(nullable = false, length=128)
+    @Column(nullable = false, length = 128)
     private String fullname;
 
     @Column(columnDefinition = "INT CHECK(selfevaluation BETWEEN 1 AND 10) NOT NULL")
@@ -30,13 +28,8 @@ public class Player implements Serializable {
     private Occupation occupation;
 
 
-
-
-
-
-
-
-    public Player() {}
+    public Player() {
+    }
 
     public Player(String userName, String fullName, int selfEvaluation, Country country, Occupation occupation) {
         this.username = userName;
