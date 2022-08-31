@@ -29,7 +29,12 @@
         </table>
     </div>
 
-    <div>
+    <!--doorbit ovladac na novu hru-->
+    <div class="minesControl">
+        <a class="abutton" href="/kamene/new">Nova hra</a>
+    </div>
+
+    <div th:if="${kameneShouldContinue}">
         <h3>Ovladanie</h3>
         <ul>
             <li><a href="/kamene/tileup">Up</a></li>
@@ -38,6 +43,14 @@
             <li><a href="/kamene/tileright">Right</a></li>
         </ul>
     </div>
+
+    <div style="color: red;" th:if="not ${kameneShouldContinue}">
+
+        <p>Hru si vyriesil</p>
+        <p th:text="'Tvoje skore je: ' + ${kamenePlayerScore} + '. Bude automaticky ulozene do databazy'"></p>
+        <p>Pre dalsiu hru kliny na "Nova hra </p>
+    </div>
+
 
     <!--String GameName z modelu smeruje do fragmentu postrating-->
     <div th:replace="fragments/fragments :: postrating(${GameName})"/>

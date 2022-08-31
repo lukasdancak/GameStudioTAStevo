@@ -12,8 +12,8 @@ import sk.tuke.gamestudio.entity.Rating;
 import sk.tuke.gamestudio.entity.Score;
 
 import sk.tuke.gamestudio.kamene.core.Field;
+import sk.tuke.gamestudio.kamene.core.GameState;
 import sk.tuke.gamestudio.minesweeper.core.Clue;
-import sk.tuke.gamestudio.minesweeper.core.GameState;
 import sk.tuke.gamestudio.kamene.core.Tile;
 import sk.tuke.gamestudio.service.CommentService;
 import sk.tuke.gamestudio.service.RatingService;
@@ -74,31 +74,48 @@ public class KameneController {
         if (userController.getLoggedUser() == null) {
             return "redirect:/";
         }
+        //ak je hrac prihlaseny a uspesne ukonci hru, tak zapise skore do databazy
+        if (userController.isLogged() && this.field.getGamestate() == GameState.SOLVED) {
+            Score newScore = new Score("kamene", userController.getLoggedUser(), this.field.getScore(), new Date());
+            try {
+                scoreService.addScore(newScore);
+            } catch (Exception e) {
+                // e.printStackTrace();
+                // ak stihnem vypise hlasku na stranke,ze neulozilo skore kvoli problemu s databazou
+            }
 
-
+        }
         prepareModel(model);
         return "kamene";
     }
 
 
-    //skontrolovat
-    @RequestMapping("/sendcomment")
-    public String createComment(String comment) {
-        commentService.addComment(new Comment("kamene", userController.getLoggedUser(), comment, new Date()));
-
-
-        return "redirect:/minesweeper";
+    @RequestMapping("/new")
+    public String newGame(Model model) {
+        field = new Field(3, 3);
+        return "redirect:/kamene";
     }
 
-    //skontorlovat
-    @RequestMapping("/sendrating")
-    public String createOrUpdateRating(int rating) {
-        if (rating > 0 && rating < 6) {
-            ratingService.setRating(new Rating("kamene", userController.getLoggedUser(), rating, new Date()));
-        }
 
-        return "redirect:/minesweeper";
-    }
+//    //skontrolovat
+//    @RequestMapping("/sendcomment")
+//    public String createComment(String comment) {
+//        commentService.addComment(new Comment("kamene", userController.getLoggedUser(), comment, new Date()));
+//
+//
+//        return "redirect:/minesweeper";
+//    }
+//
+//    //skontorlovat
+//    @RequestMapping("/sendrating")
+//    public String createOrUpdateRating(int rating) {
+//        if (rating > 0 && rating < 6) {
+//            ratingService.setRating(new Rating("kamene", userController.getLoggedUser(), rating, new Date()));
+//        }
+//
+//        return "redirect:/minesweeper";
+//    }
+
 
     public String getTileNum(Tile tile) {
         if (tile.getValue() == 0) {
@@ -109,8 +126,18 @@ public class KameneController {
     }
 
     private void prepareModel(Model model) {
+        boolean shouldContinue = true;
+        if (field.getGamestate() == GameState.SOLVED) {
+            shouldContinue = false;
+        }
+
+
         model.addAttribute("kameneField", field.getTiles());
-        //meno hry v databaze a zaroven linku controllera
+        model.addAttribute("kameneShouldContinue", shouldContinue);
+        model.addAttribute("kamenePlayerScore", String.valueOf(field.getScore()));
+
+
+        //meno hry v databaze a zaroven adresa linku controllera
         String gameName = "kamene";
         //data do fragmentov
         model.addAttribute("GameName", gameName);

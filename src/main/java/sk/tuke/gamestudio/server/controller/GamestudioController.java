@@ -82,8 +82,14 @@ public class GamestudioController {
         if (comment.length() > 1000) {
             comment = comment.substring(0, 1000);
         }
-        commentService
-                .addComment(new Comment(gameName, userController.getLoggedUser(), comment, new Date()));
+        try {
+            commentService
+                    .addComment(new Comment(gameName, userController.getLoggedUser(), comment, new Date()));
+        } catch (Exception e) {
+            //e.printStackTrace();
+            //pridat return na stranku s hlasenim chyby
+
+        }
 
 
         return "redirect:/" + gameName;
@@ -92,7 +98,12 @@ public class GamestudioController {
     @RequestMapping("/sendrating")
     public String createOrUpdateRating(int rating, String gameName) {
         if (rating > 0 && rating < 6) {
-            ratingService.setRating(new Rating(gameName, userController.getLoggedUser(), rating, new Date()));
+            try {
+                ratingService.setRating(new Rating(gameName, userController.getLoggedUser(), rating, new Date()));
+            } catch (Exception e) {
+                //e.printStackTrace();
+                //pridat return na stranku s hlasenim chyby
+            }
         }
 
         return "redirect:/" + gameName;

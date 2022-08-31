@@ -11,7 +11,7 @@ import java.util.Date;
         {@UniqueConstraint(name = "UniqueGameAndUsername", columnNames = {"game", "username"})})
 public class Rating implements Serializable {
     @Id
-    @GeneratedValue //(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private long ident;
 
     @Column(nullable = false, length = 64)

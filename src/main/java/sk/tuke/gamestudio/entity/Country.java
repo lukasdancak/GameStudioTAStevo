@@ -8,14 +8,15 @@ import java.io.Serializable;
 public class Country implements Serializable {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY) //riesenie ID nechavam na databazu, aby som mohol pripadne
-    private long ident;                                 // pouzit aj JDBC service
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long ident;
 
-    @Column(nullable = false, length=128, unique=true)
+    @Column(nullable = false, length = 128, unique = true)
     private String country;
 
 
-    public Country() { }
+    public Country() {
+    }
 
     public Country(String country) {
         this.country = country;

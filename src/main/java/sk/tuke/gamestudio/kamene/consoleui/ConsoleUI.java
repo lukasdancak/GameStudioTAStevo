@@ -8,10 +8,8 @@ import sk.tuke.gamestudio.kamene.core.GameState;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 
 public class ConsoleUI implements UserInterface {
@@ -119,7 +117,7 @@ public class ConsoleUI implements UserInterface {
             field.setGamestate(GameState.SOLVED);
         }
         //vypise dobu trvania daneho kola v sekundach
-        System.out.printf("Toto kolo hrajes %s sekund.%n", field.getPlayingSeconds());
+        System.out.printf("Toto kolo hrajes %s sekund.%n", field.getPlayingTimeInSeconds());
 
     }
 

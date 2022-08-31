@@ -11,6 +11,8 @@ public class Field {
     // suradnice na sledovanie prazdnej dlazdice:
     int emptyTileRow;
     int emptyTileColumn;
+    private int score = 0;
+
 
     // dva premenne int  - sirka a vyska
     public Field(int rowCount, int columnCount) {
@@ -124,6 +126,7 @@ public class Field {
     public String moveUp() { // posunie dlazdicu s cislom hore, prazdnu posunie dole
         if (isMovementOfEmptyTilePossibleTo("down")) {
             swapDown();
+            ifSolvedChangeGameStateAndCalculateScore();
             return "Vykonal som pohyb hore.";
         } else {
             return "Pohyb dalzdice smerom hore nie je mozny";
@@ -132,7 +135,15 @@ public class Field {
 
     }
 
-    public int getPlayingSeconds() {
+    // kontroluje game state a v pripade vyriesenia hry vypocita a zapise skore do premennej score
+    private void ifSolvedChangeGameStateAndCalculateScore() {
+        if (this.isSolved()) {
+            this.setGamestate(GameState.SOLVED);
+            this.score = 1000 / this.getPlayingTimeInSeconds();
+        }
+    }
+
+    public int getPlayingTimeInSeconds() {
         return (int) (System.currentTimeMillis() - startMillis) / 1000;
     }
 
@@ -149,6 +160,7 @@ public class Field {
     public String moveDown() {
         if (isMovementOfEmptyTilePossibleTo("up")) {
             swapUp();
+            ifSolvedChangeGameStateAndCalculateScore();
             return "Vykonal som pohyb dole.";
         } else {
             return "Pohyb dalzdice smerom dole nie je mozny";
@@ -167,6 +179,7 @@ public class Field {
     public String moveLeft() {
         if (isMovementOfEmptyTilePossibleTo("right")) {
             swapRight();
+            ifSolvedChangeGameStateAndCalculateScore();
             return "Vykonal som pohyb dolava.";
         } else {
             return "Pohyb dalzdice smerom dolava nie je mozny";
@@ -187,10 +200,12 @@ public class Field {
     public String moveRight() {
         if (isMovementOfEmptyTilePossibleTo("left")) {
             swapLeft();
+            ifSolvedChangeGameStateAndCalculateScore();
             return "Vykonal som pohyb doprava.";
         } else {
             return "Pohyb dalzdice smerom doprava nie je mozny";
         }
+
     }
 
     // posunie prazdnu dlazdicu dolava
@@ -225,5 +240,9 @@ public class Field {
 
     public Tile[][] getTiles() {
         return tiles;
+    }
+
+    public int getScore() {
+        return this.score;
     }
 }

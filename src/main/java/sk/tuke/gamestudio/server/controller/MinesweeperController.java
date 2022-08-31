@@ -123,10 +123,15 @@ public class MinesweeperController {
 
                 justFinished = true;
 
-
+                //ak je hrac prihlaseny a uspesne ukonci hru, tak zapise skore do databazy
                 if (userController.isLogged() && this.field.getState() == GameState.SOLVED) {
                     Score newScore = new Score("minesweeper", userController.getLoggedUser(), this.field.getScore(), new Date());
-                    scoreService.addScore(newScore);
+                    try {
+                        scoreService.addScore(newScore);
+                    } catch (Exception e) {
+                        //e.printStackTrace();
+                        // ak stihnem vypise hlasku na stranke,ze neulozilo skore kvoli problemu s databazou
+                    }
 
                 }
             }
@@ -191,8 +196,7 @@ public class MinesweeperController {
     @RequestMapping("/new")
     public String newGame(Model model) {
         field = new Field(9, 9, 10);
-        prepareModel(model);
-        return "minesweeper";
+        return "redirect:/minesweeper";
     }
 
     public String getCurrTime() {
@@ -289,11 +293,9 @@ public class MinesweeperController {
 
     private void prepareModel(Model model) {
 
-
         boolean shouldContinue = true;
         if (field.getState() == GameState.FAILED || field.getState() == GameState.SOLVED) {
             shouldContinue = false;
-
         }
         int win1vslose2 = 0;
         if (field.getState() == GameState.SOLVED) {
