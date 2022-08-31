@@ -109,13 +109,17 @@ public class KameneController {
     }
 
     private void prepareModel(Model model) {
-        model.addAttribute("GameName", "kamene");
         model.addAttribute("kameneField", field.getTiles());
-        model.addAttribute("TopScores", gamestudioController.getTopScoresOfGame("minesweeper"));
+        //meno hry v databaze a zaroven linku controllera
+        String gameName = "kamene";
+        //data do fragmentov
+        model.addAttribute("GameName", gameName);
+        model.addAttribute("TopScores", gamestudioController
+                .getTopScoresOfGame(gameName));
         model.addAttribute("AllComments", gamestudioController
-                .getAllCommentsOfGame("minesweeper"));
+                .getAllCommentsOfGame(gameName));
         model.addAttribute("AverageRating", gamestudioController
-                .getAverageRatingOfGame("minesweeper"));
+                .getAverageRatingOfGame(gameName));
     }
 
 }

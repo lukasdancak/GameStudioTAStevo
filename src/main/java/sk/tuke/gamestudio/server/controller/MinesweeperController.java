@@ -289,7 +289,6 @@ public class MinesweeperController {
 
     private void prepareModel(Model model) {
 
-        model.addAttribute("minesweeperField", field.getTiles());
 
         boolean shouldContinue = true;
         if (field.getState() == GameState.FAILED || field.getState() == GameState.SOLVED) {
@@ -304,15 +303,21 @@ public class MinesweeperController {
             win1vslose2 = 2;
         }
 
-        model.addAttribute("GameName", "minesweeper");
+        model.addAttribute("minesweeperField", field.getTiles());
         model.addAttribute("minesweeperWinLose", win1vslose2);
         model.addAttribute("minesweeperShouldContinue", shouldContinue);
         model.addAttribute("minesweeperPlayerScore", String.valueOf(field.getScore()));
-        model.addAttribute("TopScores", gamestudioController.getTopScoresOfGame("minesweeper"));
+
+        //meno hry v databaze a zaroven adresa linku controllera
+        String gameName = "minesweeper";
+        //data do fragmentov
+        model.addAttribute("GameName", gameName);
+        model.addAttribute("TopScores", gamestudioController
+                .getTopScoresOfGame(gameName));
         model.addAttribute("AllComments", gamestudioController
-                .getAllCommentsOfGame("minesweeper"));
+                .getAllCommentsOfGame(gameName));
         model.addAttribute("AverageRating", gamestudioController
-                .getAverageRatingOfGame("minesweeper"));
+                .getAverageRatingOfGame(gameName));
 
 
     }
