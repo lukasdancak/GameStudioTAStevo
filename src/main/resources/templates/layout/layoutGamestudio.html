@@ -3,23 +3,24 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="author" content="Stefan Korecko" />
+    <meta name="author" content="Stefan Korecko"/>
     <link rel="stylesheet"
           href="/css/gamestudio.css"
-          media="screen" />
+          media="screen"/>
 </head>
 
 <body>
 <nav th:replace="fragments/fragments :: nav"/>
-<header th:replace="fragments/fragments :: header" />
+<header th:replace="fragments/fragments :: header"/>
+<aside th:replace="fragments/fragments :: aside"/>
 
 <main layout:fragment="content"></main>
 
 <!--blok sa nezobrazi ak dodam o template-u cze model hodnotu true, inak sa zobrazi stale
 pouzijem to pre template gamestudio.html, kde nechcem zobrazit komentare a score-->
-<!--<th:block th:if="${!#bools.isTrue(hideCommentsScores)}">-->
+<!--<th:block th:if="${!#bools.isTrue(hideLoginForm)}">-->
 <!--    &lt;!&ndash;univerzalny parametricky fragment pre top scores&ndash;&gt;-->
 <!--    <div th:replace="fragments/fragments :: scores(${TopScores})" />-->
 
@@ -28,6 +29,6 @@ pouzijem to pre template gamestudio.html, kde nechcem zobrazit komentare a score
 <!--</th:block>-->
 
 
-<footer th:replace="fragments/fragments :: footer" />
+<footer th:replace="fragments/fragments :: footer"/>
 </body>
 </html>

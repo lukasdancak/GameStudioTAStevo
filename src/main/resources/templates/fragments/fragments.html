@@ -13,18 +13,33 @@
 
     <div class="banner"><span class="bannertext">Game Studio</span></div>
 
-    <h1>Vitajte v <a href="/">Gamestudio!</a></h1>
 
-    <div th:if="${@userController.logged}">
-        Prihlásený/á ako: <span th:text="${@userController.loggedUser}"/>
-        <a href="/logout">Odhlásiť sa</a>
-    </div>
-
-    <div th:if="not ${@userController.logged}">
-        Neprihlásený/á. Prosím,
-        <a href="/">prihláste sa</a>.
-    </div>
 </header>
+
+<!--fragment aside, bocny stlpec-->
+<aside th:fragment="aside">
+    <h1 th:if="not ${@userController.logged}">Vitajte v <a href="/">Gamestudio!</a></h1>
+
+    <!--blok sa nezobrazi ak dodam do template-u cez model hodnotu true, inak sa zobrazi stale
+-dovod: na stranke /registration nechcem zobrazovat login formular-->
+    <th:block th:if="${!#bools.isTrue(hideLoginForm)}">
+        <div th:if="${@userController.logged}">
+            Prihlásený/á ako: <span th:text="${@userController.loggedUser}"/>
+            <a href="/logout">Odhlásiť sa</a>
+        </div>
+
+        <div th:if="not ${@userController.logged}">
+            Neprihlásený/á. Prosím, prihlaste sa, alebo sa
+            <a href="/registration">zaregistrujte.</a>.
+        </div>
+        <form th:if="not ${@userController.logged}" action="/login" method="post">
+            <label for="login">Meno:</label> <input id="login" type="text" name="login"/> <br/>
+            <label for="pass">Heslo: </label> <input id="pass" type="password" name="password"/> <br/>
+            <button type="submit">Prihlasit sa</button>
+        </form>
+    </th:block>
+
+</aside>
 
 <!--fragment navigacia-->
 <nav th:fragment="nav">
@@ -141,6 +156,7 @@
     </form>
 </div>
 
+<!--fragment n aodoslanie ratingu-->
 <div th:fragment="postrating(GameName)">
     <br>
     <h3>Mozes zadat svoj rating hry:</h3>

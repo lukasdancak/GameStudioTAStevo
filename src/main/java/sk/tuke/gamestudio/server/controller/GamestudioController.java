@@ -39,7 +39,7 @@ public class GamestudioController {
 
     @RequestMapping("/games")
     public String gamesPage() {
-        return "redirect:/gamestudio";
+        return "redirect:/";
     }
 
     //ak nastane problem s databazou vrati NULL, a to mam osetrene vypisom vo fragmente SCORES
