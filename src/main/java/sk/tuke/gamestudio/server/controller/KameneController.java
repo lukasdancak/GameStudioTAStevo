@@ -109,6 +109,7 @@ public class KameneController {
     }
 
     private void prepareModel(Model model) {
+        model.addAttribute("GameName", "kamene");
         model.addAttribute("kameneField", field.getTiles());
         model.addAttribute("TopScores", gamestudioController.getTopScoresOfGame("minesweeper"));
         model.addAttribute("AllComments", gamestudioController
