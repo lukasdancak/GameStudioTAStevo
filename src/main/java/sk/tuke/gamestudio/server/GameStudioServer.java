@@ -17,30 +17,44 @@ import javax.persistence.Entity;
 @SpringBootApplication
 @EntityScan(basePackages = "sk.tuke.gamestudio.entity")
 public class GameStudioServer {
-    public static void main (String[] args){
+    public static void main(String[] args) {
 
         SpringApplication.run(GameStudioServer.class);
     }
 
 
-
-
     @Bean
-    public ScoreService scoreService(){
+    public ScoreService scoreService() {
         return new ScoreServiceJPA();
         //return new ScoreServiceJDBC();
     }
 
     @Bean
-    public CommentService commentService(){
+    public CommentService commentService() {
         return new CommentServiceJPA();
 
     }
 
     @Bean
-    public RatingService ratingService(){
+    public RatingService ratingService() {
         return new RatingServiceJPA();
 
+    }
+
+    @Bean
+    public CountryService countryService() {
+        return new CountryServiceJPA();
+
+    }
+
+    @Bean
+    public OccupationService occupationService() {
+        return new OccupationServiceJPA();
+    }
+
+    @Bean
+    public PlayerService playerService() {
+        return new PlayerServiceJPA();
     }
 
 

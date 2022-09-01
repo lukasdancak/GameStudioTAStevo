@@ -13,6 +13,7 @@ import sk.tuke.gamestudio.service.CommentService;
 import sk.tuke.gamestudio.service.RatingService;
 import sk.tuke.gamestudio.service.ScoreService;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,6 +29,9 @@ public class GamestudioController {
     RatingService ratingService;
     @Autowired
     UserController userController;
+
+    List<String> messagesForUser = new ArrayList<String>();
+    List<String> messagesForAdmin = new ArrayList<String>();
 
 
     @RequestMapping("/")
