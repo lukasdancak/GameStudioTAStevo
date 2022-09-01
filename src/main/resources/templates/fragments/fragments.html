@@ -16,6 +16,16 @@
 
 </header>
 
+<div th:fragment="boxMessagesForUser" id="boxMessagesForUser">
+    <h4>Messages for user:</h4>
+    <ul>
+        <li th:each="contact : ${@systemMessageController.getMessagesForUserAndDeleteThem()}">
+            <th:block th:text=${contact}></th:block>
+        </li>
+    </ul>
+
+</div>
+
 <!--fragment aside, bocny stlpec-->
 <aside th:fragment="aside">
     <h1 th:if="not ${@userController.logged}">Vitajte v <a href="/">Gamestudio!</a></h1>
@@ -96,7 +106,7 @@
 </div>
 
 
-<!--fragment top 5 scores-->
+<!--fragment vypisanie top 5 scores-->
 <div th:fragment="scores(TopScores)">
     <br>
     <h3>Scores:</h3>
@@ -125,11 +135,11 @@
     </table>
 </div>
 
-<!--fragment average rating-->
+<!--fragment na vypisanie average rating-->
 <div th:fragment="avgrating(AverageRating)">
     <br>
     <h3>Average Rating:</h3>
-    <span style="color:red;">AVG Rating z fragmentu</span>
+    <span style="color:red;">AVG Rating z fragmentu</span> <br/>
 
     <th:block th:if="${AverageRating<0}">
         <span>Problem s databazou</span>
@@ -156,7 +166,7 @@
     </form>
 </div>
 
-<!--fragment n aodoslanie ratingu-->
+<!--fragment na odoslanie ratingu-->
 <div th:fragment="postrating(GameName)">
     <br>
     <h3>Mozes zadat svoj rating hry:</h3>

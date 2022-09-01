@@ -12,10 +12,16 @@
 </head>
 
 <body>
+
 <nav th:replace="fragments/fragments :: nav"/>
 <header th:replace="fragments/fragments :: header"/>
-<aside th:replace="fragments/fragments :: aside"/>
 
+
+<th:block th:if="not ${@systemMessageController.getMessagesForUser().empty}">
+    <div th:replace="fragments/fragments :: boxMessagesForUser"/>
+</th:block>
+
+<aside th:replace="fragments/fragments :: aside"/>
 <main layout:fragment="content"></main>
 
 <!--blok sa nezobrazi ak dodam o template-u cze model hodnotu true, inak sa zobrazi stale

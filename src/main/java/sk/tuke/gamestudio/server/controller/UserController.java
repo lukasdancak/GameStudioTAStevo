@@ -20,6 +20,8 @@ public class UserController {
     OccupationService occupationService;
     @Autowired
     PlayerService playerService;
+    @Autowired
+    SystemMessageController systemMessageController;
 
     private String loggedUser;
 
@@ -49,6 +51,7 @@ public class UserController {
         if (isLogged()) {
             return "redirect:/";
         }
+        model.addAttribute("MessagesForUser", systemMessageController.messagesForUser);
         model.addAttribute("hideLoginForm", true);
         model.addAttribute("countries", countryService.getCountries());
         model.addAttribute("occupations", occupationService.getOccupations());
@@ -58,18 +61,32 @@ public class UserController {
     @RequestMapping("/registernew")
     public String proccesDataFromRegistrationForm(String userName, String fullName, int selfEvaluation, String password,
                                                   String countryName, String occupationName) {
-        //kontrola vstupny dat
+        /******* Kontrola vstupnych dat ************/
+
+        // ak bude niektory vstup zly, premenna sa zmeni na false
         boolean inputDataAreOK = true;
+        //je vlozeny userName String length >0 a <=32
+        if (userName.length() == 0 || userName.length() > 32) {
+            inputDataAreOK = false;
+            systemMessageController.messagesForUser.add("Dlzka zadaneho userName nesplna podmienky dlzky.");
+        }
+
         //existuje uz taky user?
 
         //ak je fullname prilis dlhe tak ho oseknem
 
+        //ak data nie su v poriadku > redirect na registracnu stranku, tam sa zobrazia chybove hlasky pre uzivatela
+        if (!inputDataAreOK) {
+            return "redirect:/registration";
+        }
 
-        //ak su  data v poriadku vytvori playera
+        //ak su  data v poriadku vytvori playera a redirektne na homepage,
+        // ak bude cas zobrazi hlasku o uspesnom zaregistrovani a vyzvu na prihlasenie
         Player newPlayer = new Player();
 
         // prida playera do databazy
-        playerService.addPlayer(newPlayer);
+        //playerService.addPlayer(newPlayer);
+        systemMessageController.messagesForUser.add("Novy Player bol uspesne zaregistrovany a vlozeny do databazy");
 
 
         return "redirect:/";

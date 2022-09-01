@@ -48,7 +48,7 @@ public class Field {
     // zamiesa dlazdice
     private void mixTilesInField() {
         Random r = new Random();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 50; i++) {
 
             switch (r.nextInt(4)) {
                 case 0:
@@ -139,7 +139,7 @@ public class Field {
     private void ifSolvedChangeGameStateAndCalculateScore() {
         if (this.isSolved()) {
             this.setGamestate(GameState.SOLVED);
-            this.score = 1000 / this.getPlayingTimeInSeconds();
+            this.score = 1000 / (this.getPlayingTimeInSeconds() + 1);
         }
     }
 

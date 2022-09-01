@@ -29,15 +29,16 @@ public class GamestudioController {
     RatingService ratingService;
     @Autowired
     UserController userController;
-
-    List<String> messagesForUser = new ArrayList<String>();
-    List<String> messagesForAdmin = new ArrayList<String>();
+    @Autowired
+    SystemMessageController systemMessageController;
 
 
     @RequestMapping("/")
     public String mainPage(Model model) {
         // skryje fragmenty pre komntare a score - nechcem ich na homepage
-        model.addAttribute("hideCommentsScores", true);
+        // model.addAttribute("hideCommentsScores", true);
+        systemMessageController.getMessagesForUser().add("Tuto spravu vidno len na homepage");
+
         return "gamestudio";
     }
 
