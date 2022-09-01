@@ -37,7 +37,7 @@ public class GamestudioController {
     public String mainPage(Model model) {
         // skryje fragmenty pre komntare a score - nechcem ich na homepage
         // model.addAttribute("hideCommentsScores", true);
-        systemMessageController.getMessagesForUser().add("toot jek ontrolna sprava. Tuto spravu ma byt vidno len na homepage");
+        systemMessageController.getMessagesForUser().add("Toto je kontrolna sprava. Tuto spravu ma byt vidno len na homepage");
 
         return "gamestudio";
     }

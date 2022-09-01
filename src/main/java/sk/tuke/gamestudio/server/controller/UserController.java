@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.WebApplicationContext;
 import sk.tuke.gamestudio.entity.Country;
 import sk.tuke.gamestudio.entity.Occupation;
@@ -28,17 +29,38 @@ public class UserController {
     SystemMessageController systemMessageController;
 
     private String loggedUser;
+    Player databasePlayer = null;
 
     @RequestMapping("/login")
     public String login(String login, String password) {
-        if ("heslo".equals(password)) {
-            this.loggedUser = login.trim();
-            if (this.loggedUser.length() > 0) {
-                return "redirect:/";
+
+        List<Player> listWithPlayer = null;
+        try {
+            listWithPlayer = playerService.getPlayersByUserName(login);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            systemMessageController.messagesForUser.add("!!! Problem s databazou, neviem nacitat tvoj profil");
+            return "redirect:/";
+        }
+        if (listWithPlayer.isEmpty()) {
+            systemMessageController.messagesForUser.add("!!! Hraca so zadanym username nemam v databaze, zaregistruj sa");
+            return "redirect:/registration?userNameFromLoginFrom=" + login;
+        }
+        if (!listWithPlayer.isEmpty()) {
+            systemMessageController.messagesForUser.add("OK- Hraca so zadanym username som nasiel v databaze");
+            databasePlayer = listWithPlayer.get(0);
+            if ("heslo".equals(password)) {
+                this.loggedUser = databasePlayer.getUsername();
+                if (this.loggedUser.length() > 0) {
+                    return "redirect:/";
+                }
+
             }
 
         }
-        this.loggedUser = null; // neprijal som uzivatela -->> explicitne nastavenie uzivatela na null
+        // tu sa nikdy nedostanem, je to len akoze
+        this.loggedUser = null;
+        databasePlayer = null;// neprijal som uzivatela -->> explicitne nastavenie uzivatela na null
         return "redirect:/";
     }
 
@@ -47,13 +69,17 @@ public class UserController {
     public String logout() {
 
         this.loggedUser = null;
+        databasePlayer = null;
         return "redirect:/";
     }
 
     @RequestMapping("/registration")
-    public String registration(Model model) {
+    public String registration(@RequestParam(required = false) String userNameFromLoginFrom, Model model) {
         if (isLogged()) {
             return "redirect:/";
+        }
+        if (userNameFromLoginFrom != null) {
+            model.addAttribute("userNameFromLoginForm", userNameFromLoginFrom);
         }
         model.addAttribute("MessagesForUser", systemMessageController.messagesForUser);
         model.addAttribute("hideLoginForm", true);
