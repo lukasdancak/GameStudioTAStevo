@@ -77,18 +77,25 @@ public class UserController {
 
         //ak data nie su v poriadku > redirect na registracnu stranku, tam sa zobrazia chybove hlasky pre uzivatela
         if (!inputDataAreOK) {
+            systemMessageController.messagesForUser.add("Data, ktore si zadal nie su v poriadku. Prosim pakuj registraciu.");
             return "redirect:/registration";
         }
 
-        //ak su  data v poriadku vytvori playera a redirektne na homepage,
-        // ak bude cas zobrazi hlasku o uspesnom zaregistrovani a vyzvu na prihlasenie
+        //ak su  data v poriadku vytvori playera
         Player newPlayer = new Player();
+        //pridam spravu, ze data boli spravne
+        systemMessageController.messagesForUser.add("Data, ktore si zadal su v poriadku.");
 
         // prida playera do databazy
-        //playerService.addPlayer(newPlayer);
-        systemMessageController.messagesForUser.add("Novy Player bol uspesne zaregistrovany a vlozeny do databazy");
-
-
+        try {
+            playerService.addPlayer(newPlayer);
+            systemMessageController.messagesForUser.add("Tvoj hracsky profil bol uspesne vlozeny do databazy.");
+            systemMessageController.messagesForUser.add("Teraz sa mozes prihlasit.");
+        } catch (Exception e) {
+            //e.printStackTrace();
+            systemMessageController.messagesForUser.add("Nastal problem s databazou, tvoj hracsky profil nebol ulozeny.");
+            systemMessageController.messagesForUser.add("Prosim opakuj registraciu");
+        }
         return "redirect:/";
     }
 
