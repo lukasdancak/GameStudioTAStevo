@@ -11,6 +11,8 @@ import sk.tuke.gamestudio.service.CountryService;
 import sk.tuke.gamestudio.service.OccupationService;
 import sk.tuke.gamestudio.service.PlayerService;
 
+import java.util.List;
+
 @Controller
 @Scope(WebApplicationContext.SCOPE_SESSION)
 public class UserController {
@@ -65,13 +67,31 @@ public class UserController {
 
         // ak bude niektory vstup zly, premenna sa zmeni na false
         boolean inputDataAreOK = true;
-        //je vlozeny userName String length >0 a <=32
+
+        //je vlozeny userName String length >0 a <=32 ???
         if (userName.length() == 0 || userName.length() > 32) {
             inputDataAreOK = false;
             systemMessageController.messagesForUser.add("Dlzka zadaneho userName nesplna podmienky dlzky.");
         }
 
-        //existuje uz taky user?
+        //neexistuje uz hrac s danym username v databaze ???
+        List<Player> tempVArForCheck = null;
+        try {
+            tempVArForCheck = playerService.getPlayersByUserName(userName);
+        } catch (Exception e) {
+            //e.printStackTrace();
+            systemMessageController.messagesForUser.add("Problem s databazou. Neviem overit, ci username uz existuje.");
+            inputDataAreOK = false;
+        }
+        if (tempVArForCheck != null && tempVArForCheck.isEmpty()) {
+            systemMessageController.messagesForUser.add("Username je OK. Hrac danym username neexistuje v databaze.");
+            //inputDataAreOK ostava true;
+        }
+        if (tempVArForCheck != null && tempVArForCheck.size() > 0) {
+            inputDataAreOK = false;
+            systemMessageController.messagesForUser.add("Hrac s danym username uz existuje v databaze.");
+        }
+
 
         //ak je fullname prilis dlhe tak ho oseknem
 
