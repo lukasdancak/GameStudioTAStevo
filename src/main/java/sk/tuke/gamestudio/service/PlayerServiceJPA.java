@@ -9,11 +9,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public class PlayerServiceJPA implements PlayerService{
+public class PlayerServiceJPA implements PlayerService {
 
     @PersistenceContext
     private EntityManager entityManager;
-
 
     @Override
     public List<Player> getPlayersByUserName(String uName) {
@@ -21,7 +20,6 @@ public class PlayerServiceJPA implements PlayerService{
                 .createQuery("select p from Player p where p.username = :uName")
                 .setParameter("uName", uName).getResultList()
                 ;
-
     }
 
     @Override

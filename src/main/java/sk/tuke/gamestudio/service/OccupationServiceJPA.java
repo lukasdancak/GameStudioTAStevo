@@ -9,10 +9,23 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
-public class OccupationServiceJPA implements OccupationService{
+public class OccupationServiceJPA implements OccupationService {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    //toto je moja metoda , nie je v interface
+    public Occupation getOccupationByName(String uName) {
+        try {
+            return (Occupation) entityManager
+                    .createQuery("select p from Occupation p where p.occupation = :uName")
+                    .setParameter("uName", uName).getSingleResult()
+                    ;
+        } catch (Exception e) {
+            //e.printStackTrace();
+            return null;
+        }
+    }
 
 
     @Override
