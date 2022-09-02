@@ -28,12 +28,12 @@ public class Field {
     private final int shipsTilesCount;
 
     //uncovered ships
-    private int uncoveredShipTilesCount = 0;
+    private int foundedShipTilesCount = 0;
 
     /**
      * Game state.
      */
-    private FieldState state = FieldState.PLAYING;
+    private FieldState fieldState = FieldState.PLAYING;
 
 
     /**
@@ -79,38 +79,29 @@ public class Field {
      * @param row    row number
      * @param column column number
      */
-    public void openTile(int row, int column) {
+    public void hitTile(int row, int column) {
         Tile tile = tiles[row][column];
-        if (tile.getState() == Tile.State.CLOSED) {
-            tile.setState(Tile.State.OPEN);
-            if (isSolved()) {
-                state = FieldState.SOLVED;
+        tile.setVisibilityState(Tile.VisibilityState.OPEN);
+        tile.setHitState(Tile.HitState.HIT);
 
-                return;
-            }
-        }
-    }
+        if (tile instanceof Ship) {
+            this.foundedShipTilesCount++;
 
-    private void getOpenAdjacentTiles(int row, int column) {
-        for (int rowOffset = -1; rowOffset <= 1; rowOffset++) {
-            int actRow = row + rowOffset;
-            if (actRow >= 0 && actRow < rowCount) {
-                for (int columnOffset = -1; columnOffset <= 1; columnOffset++) {
-                    int actColumn = column + columnOffset;
-                    if (actColumn >= 0 && actColumn < columnCount) {
-                        openTile(actRow, actColumn);
-                    }
-                }
-            }
         }
+
+        if (isSolved()) {
+            fieldState = FieldState.SOLVED;
+
+        }
+
     }
 
 
     public int getRemainingShipsTilesCount() {
-        return getShipsTilesCount() - this.getUncoveredShipTilesCount();
+        return getShipsTilesCount() - this.getFoundedShipTilesCount();
     }
 
-    private int getNumberOf(Tile.State state) {
+    private int getNumberOf(Tile.VisibilityState state) {
         int count = 0;
         for (int r = 0; r < rowCount; r++) {
 //            count += Arrays.asList(tiles[r])
@@ -118,7 +109,7 @@ public class Field {
 //                    .filter((Tile t) -> t.getState() == state)
 //                    .count();
             for (Tile t : tiles[r]) {
-                if (t.getState() == state)
+                if (t.getVisibilityState() == state)
                     count++;
             }
         }
@@ -159,8 +150,7 @@ public class Field {
      * @return true if game is solved, false otherwise
      */
     public boolean isSolved() {
-        return (rowCount * columnCount) - shipsTilesCount
-                == getNumberOf(Tile.State.OPEN);
+        return this.foundedShipTilesCount == this.shipsTilesCount;
     }
 
     /**
@@ -168,11 +158,12 @@ public class Field {
      */
 
 
-    public FieldState getState() {
-        return state;
+    public FieldState getFieldState() {
+        return fieldState;
     }
 
-    public int getUncoveredShipTilesCount() {
-        return uncoveredShipTilesCount;
+    public int getFoundedShipTilesCount() {
+        return foundedShipTilesCount;
     }
+
 }

@@ -7,7 +7,7 @@ public class Water extends Tile {
 
     @Override
     public String toString() {
-        if (this.getState() == Tile.State.OPEN) {
+        if (this.getVisibilityState() == VisibilityState.OPEN) {
             return "W";
         }
         return super.toString();

@@ -5,7 +5,7 @@ public abstract class Tile {
     /**
      * Tile states.
      */
-    public enum State {
+    public enum VisibilityState {
         /**
          * Open tile.
          */
@@ -17,20 +17,43 @@ public abstract class Tile {
     }
 
     /**
+     * Hitted/UnTouched states.
+     */
+    public enum HitState {
+        /**
+         * Open tile.
+         */
+        HIT,
+        /**
+         * Closed tile.
+         */
+        UNHIT,
+    }
+
+    /**
      * Tile state.
      */
-    private State state = State.CLOSED;
+    private VisibilityState visibilityState = VisibilityState.CLOSED;
+    private HitState hitState = HitState.UNHIT;
 
     @Override
     public String toString() {
         return "-";
     }
 
-    public State getState() {
-        return state;
+    public VisibilityState getVisibilityState() {
+        return visibilityState;
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setVisibilityState(VisibilityState state) {
+        this.visibilityState = state;
+    }
+
+    public HitState getHitState() {
+        return hitState;
+    }
+
+    public void setHitState(HitState hitState) {
+        this.hitState = hitState;
     }
 }
