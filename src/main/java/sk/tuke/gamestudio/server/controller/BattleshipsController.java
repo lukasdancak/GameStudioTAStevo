@@ -129,6 +129,7 @@ public class BattleshipsController {
             win1vslose2 = 2;
         }
         model.addAttribute("shipsToFind", fields.getComputersField().getRemainingShipsTilesCount());
+        model.addAttribute("computersShipsToFind", fields.getPlayersField().getRemainingShipsTilesCount());
         model.addAttribute("battleshipsField", fields.getComputersField().getTiles());
         model.addAttribute("battleshipsField2", fields.getPlayersField().getTiles());
 

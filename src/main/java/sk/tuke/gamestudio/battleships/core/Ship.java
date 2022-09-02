@@ -5,7 +5,7 @@ public class Ship extends Tile {
     @Override
     public String toString() {
         if (this.getVisibilityState() == VisibilityState.OPEN) {
-            return "X";
+            return "S";
         }
         return super.toString();
     }

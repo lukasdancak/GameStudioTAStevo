@@ -1,5 +1,9 @@
 /*styl pre battleships pole*/
 
+
+
+
+
 table.battleships td {
     text-align: center;
     background-color: lightgray;
@@ -37,6 +41,11 @@ table.battleships td.closed:hover {
 
 table.battleships td.closed span {
     display: none;
+}
+
+table.battleships td.hit span {
+    display: inline;
+    color:red;
 }
 
 table.battleships td.ship {

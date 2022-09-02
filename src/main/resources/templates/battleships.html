@@ -84,6 +84,13 @@
     <!--hracove pole, defaultne su vsetky tiles open-->
     <h4>Toto je tvoje pole:</h4>
     <br/>
+    <div style="color: red;" th:if="${battleshipsShouldContinue}">
+        <p>
+            Tvoj super musi najst este:
+            <th:block th:text="${computersShipsToFind}"></th:block>
+            lodi.
+        </p>
+    </div>
 
     <div>
         <table class='battleships'>
