@@ -38,6 +38,8 @@ public class MinesweeperController {
     GamestudioController gamestudioController;
     @Autowired
     private UserController userController;
+    @Autowired
+    SystemMessageController systemMessageController;
 
     private Field field = new Field(9, 9, 10);
 
@@ -130,7 +132,8 @@ public class MinesweeperController {
                         scoreService.addScore(newScore);
                     } catch (Exception e) {
                         //e.printStackTrace();
-                        // ak stihnem vypise hlasku na stranke,ze neulozilo skore kvoli problemu s databazou
+                        // vypise hlasku na stranke,ze neulozilo skore kvoli problemu s databazou
+                        systemMessageController.messagesForUser.add("!!! Problem s databazou, tvoje skore bohuzial nebolo ulozene.");
                     }
 
                 }
