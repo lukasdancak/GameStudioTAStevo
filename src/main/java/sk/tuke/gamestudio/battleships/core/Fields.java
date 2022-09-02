@@ -20,6 +20,7 @@ public class Fields {
     public Fields() {
         //Field-y naplni konstruktor Field-ov
         this.playersField = new Field(10, 10, 31);
+        this.playersField.makeAllTilesOpen(); // hrac vidi s voje pole otvorene
         this.computersField = new Field(10, 10, 31);
         this.startMillis = System.currentTimeMillis();
     }
@@ -88,5 +89,9 @@ public class Fields {
 
     public void setComputersField(Field computersField) {
         this.computersField = computersField;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

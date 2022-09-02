@@ -81,6 +81,7 @@ public class GamestudioController {
 
     }
 
+    //mapovanie pre pridanie komentu-univerzalne pre akukolvek hru - parametrizovany fragment
     @RequestMapping("/sendcomment")
     public String createComment(String comment, String gameName) {
         //odsekne koniec stringu ak ma viac ako 1000 znakov
@@ -100,6 +101,7 @@ public class GamestudioController {
         return "redirect:/" + gameName;
     }
 
+    //mapovanie pre pridanie/upddate ratingu -univerzalne pre akukolvek hru - parametrizovany fragment
     @RequestMapping("/sendrating")
     public String createOrUpdateRating(int rating, String gameName) {
         if (rating > 0 && rating < 6) {

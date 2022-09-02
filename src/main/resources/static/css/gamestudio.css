@@ -1,3 +1,104 @@
+/*styl pre battleships pole*/
+
+table.battleships td {
+    text-align: center;
+    background-color: lightgray;
+    width: 1.5em;
+    height: 1.5em;
+    font-size: 2.1em;
+    border-radius: 0.2em;
+}
+
+table.battleships a:link,
+table.battleships a:visited,
+table.battleships a:link:hover,
+table.battleships a:visited:hover {
+    color: inherit;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+table.battleships a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+table.battleships td.closed {
+    background-color: darkgray;
+    color: darkgray;
+}
+
+table.battleships td.closed:hover {
+    background-color: springgreen;
+}
+
+table.battleships td.closed span {
+    display: none;
+}
+
+table.battleships td.ship {
+    background-color: black;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
+}
+
+table.battleships td.mine span {
+    display: none;
+}
+
+
+
+
+
+table.battleships td.open {
+    color: lightgray;
+    background-image: url("/fig/battleships/sea.png");
+        background-repeat: no-repeat;
+        background-position: center;
+         background-size: cover;
+}
+
+table.battleships td.open span {
+    display: none;
+}
+
+
+
+/*adjustment for smaller screens/viewports*/
+@media (max-width: 600px)/*,
+(min-resolution: 1.8dppx) */ {
+    body {
+        max-width: 95vw;
+    }
+
+    table.battleships td {
+        font-size: calc(1em + 4vw);
+        width: 10vw;
+        height: 10vw;
+        min-width: 1em;
+        min-height: 1em;
+    }
+}
+
+@media (max-height: 780px),
+(max-width: 600px) and (orientation: landscape)/*,
+(min-resolution: 1.8dppx)  and (orientation:landscape)*/ {
+
+    table.battleships td {
+        font-size: calc(1em + 2vh);
+        width: 5vh;
+        height: 5vh;
+    }
+}
+
+
+
+/**/
 div#boxMessagesForUser {
     border: solid;
     margin-top: 10px;

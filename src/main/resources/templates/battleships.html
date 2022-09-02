@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutGamestudio.html}"
+      lang="sk">
+<head>
+    <!--    <meta charset="UTF-8" />-->
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <!--    <meta name="author" content="Stefan Korecko" />-->
+    <!--    <link rel="stylesheet"-->
+    <!--          href="/css/gamestudio.css"-->
+    <!--          media="screen" />-->
+
+
+    <title>GameStudio - Battleships</title>
+</head>
+
+<body>
+
+<!--<div th:replace="fragments/fragments :: header" />-->
+<!--vdaka pouzitie REPLACE tu to nemusi byt header, aj ked to bude div vlozi tam header tag-->
+
+<!--ak tam bude INSERT. insert iba vlozi dovnutra div tag header-->
+<!--<div th:insert="fragments/fragments :: header" />-->
+
+
+<main layout:fragment="content">
+
+
+    <h2>Battleships</h2>
+
+
+    <div class="minesControl">
+
+
+        <a class="abutton" href="/battleships/new">Nova hra</a>
+
+    </div>
+
+
+    <br>
+    <div style="color: red;" th:if="${battleshipsShouldContinue}">
+        <p>Klikni na policko na ktore zautocis.</p>
+        <p>Pocet lodi, ktore mas este najst je:
+            <th:block th:text="${shipsToFind}"></th:block>
+        </p>
+    </div>
+
+    <div style="color: red;" th:if="not ${battleshipsShouldContinue}">
+
+        <p th:if="${battleshipsWinLose == 2}"> Hru si prehral, nie je mozne dalej hrat.</p>
+        <p th:if="${battleshipsWinLose == 1}"> Hru si vyhral, nie je mozne dalej hrat.</p>
+
+        <p th:text="'Tvoje skore je: ' + ${battleshipsPlayerScore}+ '. Bude automaticky ulozene do databazy'"></p>
+    </div>
+    <br>
+
+    <!--hracove pole, defaultne su vsetky tiles open-->
+    <h4>Toto je pole tvojho supera:</h4>
+    <br/>
+
+    <div>
+        <table class='battleships'>
+            <tr th:each="row: ${battleshipsField}">
+                <td th:each="tile: ${row}"
+                    th:attr="class=${@battleshipsController.getTileClass(tile)}">
+
+                    <a th:if="${battleshipsShouldContinue}"
+                       th:attr="href='/battleships/?row='+${rowStat.index}+'&column='+${tileStat.index}">
+                        <span th:text="${@battleshipsController.getTileText(tile)}"></span>
+                    </a>
+
+                    <a th:if="not ${battleshipsShouldContinue}">
+                        <span th:text="${@battleshipsController.getTileText(tile)}"></span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <br/>
+    <hr>
+    <br/>
+    <!--hracove pole, defaultne su vsetky tiles open-->
+    <h4>Toto je tvoje pole:</h4>
+    <br/>
+
+    <div>
+        <table class='battleships'>
+            <tr th:each="row: ${battleshipsField2}">
+                <td th:each="tile: ${row}"
+                    th:attr="class=${@battleshipsController.getTileClass(tile)}"
+                    th:classappend="${@battleshipsController.getTileClassByHitState(tile)}">
+
+                    <a th:if="${battleshipsShouldContinue}">
+                        <span th:text="${@battleshipsController.getTileText(tile)}"></span>
+                    </a>
+
+                    <a th:if="not ${battleshipsShouldContinue}">
+                        <span th:text="${@battleshipsController.getTileText(tile)}"></span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <!--String GameName z modelu smeruje do fragmentu postrating-->
+    <div th:replace="fragments/fragments :: postrating(${GameName})"/>
+
+    <!--String GameName z modelu smeruje do fragmentu postcomment-->
+    <div th:replace="fragments/fragments :: postcomment(${GameName})"/>
+
+    <!--int AverageRating z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: avgrating(${AverageRating})"/>
+
+    <!--Objekt TopScores z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: scores(${TopScores})"/>
+
+    <!--Objekt AllComments z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: comments(${AllComments})"/>
+
+</main>
+
+
+</body>
+</html>
