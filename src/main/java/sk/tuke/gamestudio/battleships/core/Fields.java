@@ -15,6 +15,13 @@ public class Fields {
     //konstruktor
 
 
+    public Fields(Field playersField, Field computersField, long startMillis) {
+        //Field-y vygeneruje konstruktor Field-ov
+        this.playersField = playersField;
+        this.computersField = computersField;
+        this.startMillis = startMillis;
+    }
+
     public int getScore() {
         return score;
     }
@@ -34,5 +41,21 @@ public class Fields {
 
     public GameState getGameState() {
         return gameState;
+    }
+
+    public Field getPlayersField() {
+        return playersField;
+    }
+
+    public void setPlayersField(Field playersField) {
+        this.playersField = playersField;
+    }
+
+    public Field getComputersField() {
+        return computersField;
+    }
+
+    public void setComputersField(Field computersField) {
+        this.computersField = computersField;
     }
 }
