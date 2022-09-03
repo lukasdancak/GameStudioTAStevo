@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layoutGamestudio.html}"
+      lang="sk">
+<head>
+
+
+    <title>GameStudio - Kamene</title>
+</head>
+
+<body>
+
+
+<main layout:fragment="content">
+
+
+    <h2>Kamene</h2>
+
+
+    <div>
+        <table class='kamene'>
+            <tr th:each="row: ${kameneField}">
+                <td th:each="tile: ${row}">
+
+                    <span th:text="${@kameneController.getTileNum(tile)}"></span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <!--doorbit ovladac na novu hru-->
+    <div class="minesControl">
+        <a class="abutton" href="/kamene/new">Nova hra</a>
+    </div>
+
+    <div th:if="${kameneShouldContinue}">
+        <h3>Ovladanie</h3>
+        <ul>
+            <li><a href="/kamene/tileup">Up</a></li>
+            <li><a href="/kamene/tiledown">Down</a></li>
+            <li><a href="/kamene/tileleft">Left</a></li>
+            <li><a href="/kamene/tileright">Right</a></li>
+        </ul>
+    </div>
+
+    <div style="color: red;" th:if="not ${kameneShouldContinue}">
+
+        <p>Hru si vyriesil</p>
+        <p th:text="'Tvoje skore je: ' + ${kamenePlayerScore} + '. Bude automaticky ulozene do databazy'"></p>
+        <p>Pre dalsiu hru kliny na "Nova hra </p>
+    </div>
+
+
+    <!--String GameName z modelu smeruje do fragmentu postrating-->
+    <div th:replace="fragments/fragments :: postrating(${GameName})"/>
+
+    <!--String GameName z modelu smeruje do fragmentu postcomment-->
+    <div th:replace="fragments/fragments :: postcomment(${GameName})"/>
+
+    <!--int AverageRating z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: avgrating(${AverageRating})"/>
+
+    <!--Objekt TopScores z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: scores(${TopScores})"/>
+
+    <!--Objekt AllComments z modelu smeruje do fragmentu:-->
+    <div th:replace="fragments/fragments :: comments(${AllComments})"/>
+</main>
+
+
+</body>
+</html>
