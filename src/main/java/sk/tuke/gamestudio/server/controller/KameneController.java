@@ -74,11 +74,14 @@ public class KameneController {
         if (userController.getLoggedUser() == null) {
             return "redirect:/";
         }
-        //ak je hrac prihlaseny a uspesne ukonci hru, tak zapise skore do databazy
-        if (userController.isLogged() && this.field.getGamestate() == GameState.SOLVED) {
-            gamestudioController.addScoreToDatabase("kamene", this.field.getScore());
-        }
         prepareModel(model);
+        //ak je hrac prihlaseny a uspesne ukonci hru, tak zapise skore do databazy
+        if (userController.isLogged() && this.field.getGamestate() == GameState.SOLVED
+                && field.getScore() > 0) {
+            gamestudioController.addScoreToDatabase("kamene", this.field.getScore());
+            this.field.setScore(0);//na zapis je iba jeden pokus
+        }
+
         return "kamene";
     }
 
