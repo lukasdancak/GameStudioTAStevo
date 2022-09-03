@@ -35,6 +35,14 @@ table.battleships td.closed {
     color: darkgray;
 }
 
+table.battleships td.hit {
+    background-image: url("/fig/battleships/crossicon.png");
+
+            background-repeat: no-repeat;
+            background-position: center;
+             background-size: cover;
+}
+
 table.battleships td.closed:hover {
     background-color: springgreen;
 }
@@ -56,7 +64,7 @@ table.battleships td.ship {
     background-size: 80%;
 }
 
-table.battleships td.mine span {
+table.battleships td.ship span {
     display: none;
 }
 
@@ -64,15 +72,14 @@ table.battleships td.mine span {
 
 
 
-table.battleships td.open {
-    color: lightgray;
-    background-image: url("/fig/battleships/sea.png");
-        background-repeat: no-repeat;
-        background-position: center;
-         background-size: cover;
+table.battleships td.water {
+ background-color: blue;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 80%;
 }
 
-table.battleships td.open span {
+table.battleships td.water span {
     display: none;
 }
 

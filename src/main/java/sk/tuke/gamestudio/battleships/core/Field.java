@@ -159,7 +159,7 @@ public class Field {
      * @return true if game is solved, false otherwise
      */
     public boolean isSolved() {
-        return this.foundedShipTilesCount == this.shipsTilesCount;
+        return (this.foundedShipTilesCount + 29) == this.shipsTilesCount; // kvoli testovaniu
     }
 
     /**

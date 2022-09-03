@@ -76,14 +76,7 @@ public class KameneController {
         }
         //ak je hrac prihlaseny a uspesne ukonci hru, tak zapise skore do databazy
         if (userController.isLogged() && this.field.getGamestate() == GameState.SOLVED) {
-            Score newScore = new Score("kamene", userController.getLoggedUser(), this.field.getScore(), new Date());
-            try {
-                scoreService.addScore(newScore);
-            } catch (Exception e) {
-                // e.printStackTrace();
-                // ak stihnem vypise hlasku na stranke,ze neulozilo skore kvoli problemu s databazou
-            }
-
+            gamestudioController.addScoreToDatabase("kamene", this.field.getScore());
         }
         prepareModel(model);
         return "kamene";

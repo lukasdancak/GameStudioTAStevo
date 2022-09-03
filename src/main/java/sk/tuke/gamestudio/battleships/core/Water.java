@@ -7,9 +7,19 @@ public class Water extends Tile {
 
     @Override
     public String toString() {
+        StringBuilder s = new StringBuilder("");
+
         if (this.getVisibilityState() == VisibilityState.OPEN) {
-            return "W";
+            s.append("W");
+            if (this.getHitState() == HitState.HIT) {
+                s.append("H");
+            } else {
+                s.append("U");
+            }
+            return s.toString();
         }
         return super.toString();
     }
+
+
 }

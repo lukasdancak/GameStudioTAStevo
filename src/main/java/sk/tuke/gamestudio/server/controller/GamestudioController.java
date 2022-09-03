@@ -81,6 +81,18 @@ public class GamestudioController {
 
     }
 
+    // zapise skore do databazy - pouzitelne pre vsetky hry
+    public void addScoreToDatabase(String gameName, int playersScore) {
+        try {
+            scoreService.addScore(new Score(gameName, userController.getLoggedUser(), playersScore, new Date()));
+            systemMessageController.messagesForUser.add("OK- Skore bolo zapisane do databazy. Skore: " + playersScore);
+
+        } catch (Exception e) {
+            //e.printStackTrace();
+            systemMessageController.messagesForUser.add("!!! Problem s databazou. Tvoje skore sa nepodarilo ulozit.");
+        }
+    }
+
     //mapovanie pre pridanie komentu-univerzalne pre akukolvek hru - parametrizovany fragment
     @RequestMapping("/sendcomment")
     public String createComment(String comment, String gameName) {

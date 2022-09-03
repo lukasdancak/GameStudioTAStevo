@@ -57,22 +57,20 @@ public class BattleshipsController {
 
         }
 
+        prepareModel(model);
+
         if (fields.getGameState() == GameState.WIN) {
 
             if (userController.isLogged() && fields.getScore() != 0) {
-                try {
-                    scoreService.addScore(new Score("battleships", userController.getLoggedUser(), fields.getScore(), new Date()));
-                } catch (Exception e) {
-                    //e.printStackTrace();
-                    systemMessageController.messagesForUser.add("!!! Problem s databazou. Tvoje skore sa nepodarilo ulozit.");
-                }
-                fields.setScore(0);//po zapise vynuluje skore
+                gamestudioController.addScoreToDatabase("battleships", fields.getScore());
+
+                fields.setScore(0); // iba jeden pokus na zapisanie skore do databazy
 
             }
 
         }
 
-        prepareModel(model);
+
         return "battleships";
     }
 
@@ -87,33 +85,45 @@ public class BattleshipsController {
         return tile.toString();
     }
 
-    public String getTileClass(Tile tile) {
+    //vrati ci je closed, water ship
+    public String getTileClassByVisbility(Tile tile) {
         switch (tile.getVisibilityState()) {
-            case OPEN:
-                if (tile instanceof Water)
-                    return "open";
-                else
-                    return "ship";
             case CLOSED:
                 return "closed";
+            case OPEN:
+                if (tile instanceof Water) {
+                    return "water";
+                } else {
+                    return "ship";
+                }
 
             default:
                 throw new RuntimeException("Unexpected tile state");
         }
     }
 
+    //vrati ci dlazdica bola HIT, alebo je UNHIT - preto aby na hracovom poli zobrazovalo zasahy supera(pocitaca)
     public String getTileClassByHitState(Tile tile) {
         switch (tile.getHitState()) {
             case HIT:
 
                 return "hit";
             case UNHIT:
-                return "unhit";
+                return "";
 
             default:
                 throw new RuntimeException("Unexpected tile state");
         }
     }
+
+    //vrati ci dlazdica bola HIT, alebo je UNHIT - preto aby na hracovom poli zobrazovalo zasahy supera(pocitaca)
+//    public String getTileClassByTileType(Tile tile) {
+//        if (tile instanceof Water) {
+//            return "water";
+//        } else {
+//            return "ship";
+//        }
+//    }
 
     private void prepareModel(Model model) {
 
@@ -136,6 +146,8 @@ public class BattleshipsController {
         model.addAttribute("battleshipsWinLose", win1vslose2);
         model.addAttribute("battleshipsShouldContinue", shouldContinue);
         model.addAttribute("battleshipsPlayerScore", String.valueOf(fields.getScore()));
+        // skore sa zobrazi iba raz
+
 
         //meno hry v databaze a zaroven adresa linku controllera
         String gameName = "battleships";

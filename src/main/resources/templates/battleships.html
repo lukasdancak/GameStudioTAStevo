@@ -49,21 +49,24 @@
     <div style="color: red;" th:if="not ${battleshipsShouldContinue}">
 
         <p th:if="${battleshipsWinLose == 2}"> Hru si prehral, nie je mozne dalej hrat.</p>
-        <p th:if="${battleshipsWinLose == 1}"> Hru si vyhral, nie je mozne dalej hrat.</p>
+        <p th:if="${battleshipsWinLose == 2}"
+           th:text="'Tvoje skore je: ' + ${battleshipsPlayerScore}+ '. Nebude ulozene do databazy'"></p>
 
-        <p th:text="'Tvoje skore je: ' + ${battleshipsPlayerScore}+ '. Bude automaticky ulozene do databazy'"></p>
+        <p th:if="${battleshipsWinLose == 1}"> Hru si vyhral, nie je mozne dalej hrat.</p>
+        <p th:if="${battleshipsWinLose == 1}"
+           th:text="'Tvoje skore je: ' + ${battleshipsPlayerScore}+ '. Bude automaticky ulozene do databazy'"></p>
+
+        <!--        <p th:text="'Tvoje skore je: ' + ${battleshipsPlayerScore}+ '. Bude automaticky ulozene do databazy'"></p>-->
     </div>
-    <br>
 
     <!--hracove pole, defaultne su vsetky tiles open-->
     <h4>Toto je pole tvojho supera:</h4>
-    <br/>
 
     <div>
         <table class='battleships'>
             <tr th:each="row: ${battleshipsField}">
                 <td th:each="tile: ${row}"
-                    th:attr="class=${@battleshipsController.getTileClass(tile)}">
+                    th:attr="class=${@battleshipsController.getTileClassByVisbility(tile)}">
 
                     <a th:if="${battleshipsShouldContinue}"
                        th:attr="href='/battleships/?row='+${rowStat.index}+'&column='+${tileStat.index}">
@@ -78,12 +81,12 @@
         </table>
     </div>
 
-    <br/>
+
     <hr>
-    <br/>
+
     <!--hracove pole, defaultne su vsetky tiles open-->
     <h4>Toto je tvoje pole:</h4>
-    <br/>
+
     <div style="color: red;" th:if="${battleshipsShouldContinue}">
         <p>
             Tvoj super musi najst este:
@@ -96,7 +99,7 @@
         <table class='battleships'>
             <tr th:each="row: ${battleshipsField2}">
                 <td th:each="tile: ${row}"
-                    th:attr="class=${@battleshipsController.getTileClass(tile)}"
+                    th:attr="class=${@battleshipsController.getTileClassByVisbility(tile)}"
                     th:classappend="${@battleshipsController.getTileClassByHitState(tile)}">
 
                     <a th:if="${battleshipsShouldContinue}">
